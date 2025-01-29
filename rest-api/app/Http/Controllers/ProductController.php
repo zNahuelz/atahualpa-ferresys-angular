@@ -86,13 +86,13 @@ class ProductController extends Controller
 
     public function getProducts()
     {
-        $products = Product::with(['supplier','unitType'])->get(); //TODO Check!
+        $products = Product::with(['supplier','unitType'])->paginate(10); //TODO Check!
         return response()->json($products);
     }
 
     public function getProductsByName($name)
     {
-        $products = Product::with(['supplier','unitType'])->where('name','LIKE','%'.$name.'%')->get();
+        $products = Product::with(['supplier','unitType'])->where('name','LIKE','%'.$name.'%')->paginate(10);
         return response()->json($products);
     }
 

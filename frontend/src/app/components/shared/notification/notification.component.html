@@ -1,0 +1,9 @@
+<div class="container mt-2">
+  @for (n of notifications; track $index) {
+    <div class="alert alert-primary" role="alert">
+      {{ n.message }}
+      <button (click)="closeNotification($index)">Close</button>
+    </div>
+  }
+
+</div>
