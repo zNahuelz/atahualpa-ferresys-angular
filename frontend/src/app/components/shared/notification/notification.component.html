@@ -1,9 +1,26 @@
 <div class="container mt-2">
   @for (n of notifications; track $index) {
-    <div class="alert alert-primary" role="alert">
-      {{ n.message }}
-      <button (click)="closeNotification($index)">Close</button>
+    <div class="alert {{n.type}} fade show" role="alert">
+      <div class="row ms-1 me-1">
+        <div class="col-1">
+          @if (n.alertIcon == 'check') {
+            <i class="bi bi-check-lg" style="width: 20px; height: 20px"></i>
+          } @else if (n.alertIcon == 'error') {
+            <i class="bi bi-exclamation-triangle-fill" style="width: 20px; height: 20px"></i>
+          } @else if (n.alertIcon == 'info') {
+            <i class="bi bi-info-circle-fill" style="width: 20px; height: 20px"></i>
+          } @else {
+            <i class="bi bi-question-circle-fill"></i>
+          }
+        </div>
+        <div class="col">
+          <span class="me-auto" style="width: 20px; height: 20px">{{ n.message }}</span>
+        </div>
+        <button type="button" class="btn-close" (click)="closeNotification($index)"></button>
+      </div>
+
     </div>
+
   }
 
 </div>

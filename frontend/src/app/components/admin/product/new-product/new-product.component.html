@@ -1,12 +1,149 @@
-@if(!loading){
-Error de carga....
-}
-@else{
-
-  <div class="card mt-5">
-    <div class="card-body">
-      Wip...
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando formulario...</h3>
+  </div>
+} @else if (loadError) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <div class="row text-center">
+      <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 120px"></i>
+      <span class="fs-4 text-dark fw-lighter">Ups! Error en la carga del formulario. Intente nuevamente.</span>
     </div>
+  </div>
+} @else {
+  <div class="row mt-5">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <div class="card border-primary">
+        <div class="card-header bg-primary text-white text-center fw-bold">
+          <i class="bi bi-box-seam"></i> NUEVO PRODUCTO
+        </div>
+        <div class="card-body">
+          <form [formGroup]="newProductForm" (ngSubmit)="onSubmit()">
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput formControlName="name" (keydown)="disableCharacters($event)"/>
+                @if (newProductForm.get('name')?.hasError('required')) {
+                  <mat-error>Debe ingresar un nombre.</mat-error>
+                }
+                @if (newProductForm.get('name')?.hasError('minlength') || newProductForm.get('name')?.hasError('maxlength')) {
+                  <mat-error>El nombre debe tener entre 2 y 150 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="description" (keydown)="disableCharacters($event)"></textarea>
+                @if (newProductForm.get('description')?.hasError('maxlength')) {
+                  <mat-error>La descripción debe tener como máximo 255 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Precio de Compra</mat-label>
+                <input matInput type="number" placeholder="0.00" formControlName="buy_price" class="text-danger fw-bold"
+                       (keydown)="disableNegatives($event)"/>
+                @if (newProductForm.get('buy_price')?.hasError('required')) {
+                  <mat-error>Debe ingresar el precio de compra.</mat-error>
+                }
+                @if (newProductForm.get('buy_price')?.hasError('pattern')) {
+                  <mat-error>El número ingresado no cumple con el formato requerido.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Precio de Venta</mat-label>
+                <input matInput type="number" placeholder="0.00" formControlName="sell_price"
+                       class="text-success fw-bold" (keydown)="disableNegatives($event)"/>
+                @if (newProductForm.get('sell_price')?.hasError('required')) {
+                  <mat-error>Debe ingresar el precio de venta.</mat-error>
+                }
+                @if (newProductForm.get('sell_price')?.hasError('pattern')) {
+                  <mat-error>El número ingresado no cumple con el formato requerido.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Stock</mat-label>
+                <input matInput type="number" placeholder="1" formControlName="stock" [min]="1" [step]="1"
+                       (keydown)="allowIntegers($event)"/>
+                @if (newProductForm.get('stock')?.hasError('required')) {
+                  <mat-error>Debe ingresar el stock.</mat-error>
+                }
+                @if (newProductForm.get('stock')?.hasError('pattern')) {
+                  <mat-error>El número ingresado no cumple con el formato requerido.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Proveedor</mat-label>
+                <mat-select formControlName="supplier_id">
+                  @for (s of suppliers; track s) {
+                    <mat-option [value]="s.id">{{ s.name }}</mat-option>
+                  }
+                </mat-select>
+                @if (newProductForm.get('supplier_id')?.hasError('notZero')) {
+                  <mat-error>Debe seleccionar un proveedor.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Presentación</mat-label>
+                <mat-select formControlName="unit_type_id">
+                  @for (u of unitTypes; track u) {
+                    <mat-option [value]="u.id">{{ u.name }}</mat-option>
+                  }
+                </mat-select>
+                @if (newProductForm.get('unit_type_id')?.hasError('notZero')) {
+                  <mat-error>Debe seleccionar una presentación.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-slide-toggle formControlName="visible">Visible</mat-slide-toggle>
+            </div>
+
+            <div class="row text-center ms-3 me-3 mt-3">
+              <div class="col">
+                <button mat-fab extended class="me-2 bg-danger bg-gradient text-white" (click)="this.location.back()">
+                  <mat-icon>cancel</mat-icon>
+                  Cancelar
+                </button>
+                <button mat-fab extended class="me-2 bg-primary bg-gradient text-white"
+                        (click)="resetForm()">
+                  <mat-icon>restart_alt</mat-icon>
+                  Limpiar
+                </button>
+
+                <button mat-fab extended class="bg-success bg-gradient text-white" [disabled]="newProductForm.invalid"
+                        type="submit">
+                  <mat-icon>save</mat-icon>
+                  Guardar
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-3"></div>
   </div>
 }
 

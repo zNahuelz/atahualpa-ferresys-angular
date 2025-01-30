@@ -22,4 +22,8 @@ export class ProductService {
     return this.httpWrapper.GET<PaginatedResponse<Product>>(`${this.endpoint}/by_name/${name}?page=${page}`);
   }
 
+  createProduct(product: Product): Observable<any> {
+    return this.httpWrapper.POST<any>(`${this.endpoint}`, product);
+  }
+
 }
