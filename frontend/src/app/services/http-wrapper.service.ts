@@ -48,8 +48,8 @@ export class HttpWrapperService {
 
   private handleError(error: any): Observable<never> {
     const errorMessage = error?.message || 'Error desconocido.';
-    console.error('HTTP ERROR', error.message);
-    console.log(error);
-    return throwError(() => new Error(error.message));
+    //console.error('HTTP ERROR', error.message);
+    //console.log(error);
+    return throwError(() => error.error || errorMessage);
   }
 }

@@ -19,10 +19,22 @@ import {
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {Product} from '../../../../models/product.model';
 import {NotificationService} from '../../../../services/notification.service';
+import Swal from 'sweetalert2';
+import {ERROR_MESSAGES as em, SUCCESS_MESSAGES as sm} from '../../../../utils/app.constants';
+
 
 @Component({
   selector: 'app-new-product',
-  imports: [ReactiveFormsModule, FormsModule, ReactiveFormsModule, MatInputModule, MatSlideToggleModule, MatSelectModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSlideToggleModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './new-product.component.html',
   styleUrl: './new-product.component.css'
 })
@@ -30,7 +42,6 @@ export class NewProductComponent {
   private productService = inject(ProductService);
   private unitTypeService = inject(UnitTypeService);
   private supplierService = inject(SupplierService);
-  private notificationService = inject(NotificationService);
   location = inject(Location);
   loading = true;
   suppliersLoaded = false;
@@ -71,15 +82,76 @@ export class NewProductComponent {
     );
     this.productService.createProduct(product).subscribe({
       next: response => {
-        this.notificationService.showNotification(`Producto: ${response.product.name} creado correctamente.`, 'alert-success');
-        this.resetForm(); //TODO: Check this!
-        console.log(response);
+        Swal.fire(sm.SUCCESS_TAG, `${sm.PRODUCT_CREATED} Información: ID ${response.product.id} NOMBRE: ${response.product.name}`, 'success')
+          .then((r) => {
+            if (r.isConfirmed || r.isDismissed || r.dismiss) {
+              window.location.reload();
+            }
+          });
       },
       error: error => {
-        console.log(error);
+        if (error.errors?.supplier_id && error.errors?.unit_type_id) {
+          Swal.fire(em.ERROR_TAG, em.INVALID_SUPPLIER_AND_UNIT_TYPE, 'error').then((e) => {
+            if (e.isConfirmed || e.isConfirmed || e.dismiss) {
+              window.location.reload();
+            }
+          });
+        } else if (error.errors?.unit_type_id) {
+          Swal.fire(em.ERROR_TAG, em.INVALID_UNIT_TYPE, 'error').then((e) => {
+            if (e.isConfirmed || e.isConfirmed || e.dismiss) {
+              window.location.reload();
+            }
+          });
+        } else if (error.errors?.supplier_id) {
+          Swal.fire(em.ERROR_TAG, em.INVALID_SUPPLIER, 'error').then((e) => {
+            if (e.isConfirmed || e.isConfirmed || e.dismiss) {
+              window.location.reload();
+            }
+          });
+        } else {
+          Swal.fire(em.ERROR_TAG, em.SERVER_ERROR, 'error').then((e) => {
+            if (e.isConfirmed || e.isConfirmed || e.dismiss) {
+              window.location.reload();
+            }
+          });
+        }
       }
     })
-    console.log(product);
+  }
+
+  fetchUnitTypes() {
+    this.unitTypeService.getUnitTypes().subscribe({
+      next: response => {
+        this.unitTypes = response;
+        if (this.unitTypes.length > 0) {
+          this.unitTypesLoaded = true;
+        }
+      },
+      error: error => {
+        this.loading = false;
+        this.unitTypesLoaded = false;
+        this.loadError = true;
+      }
+    });
+  }
+
+  fetchSuppliers() {
+    this.supplierService.getSuppliers().subscribe({
+      next: response => {
+        this.suppliers = response;
+        if (this.suppliers.length > 0) {
+          this.suppliersLoaded = true;
+        }
+        if (this.unitTypesLoaded && this.suppliersLoaded) {
+          this.loading = false;
+        }
+      },
+      error: error => {
+        this.loading = false;
+        this.suppliersLoaded = false;
+        this.loadError = true;
+      }
+    })
   }
 
   allowIntegers(e: KeyboardEvent) {
@@ -100,47 +172,8 @@ export class NewProductComponent {
     }
   }
 
-  fetchUnitTypes() {
-    this.unitTypeService.getUnitTypes().subscribe({
-      next: response => {
-        this.unitTypes = response;
-        if (this.unitTypes.length > 0) {
-          this.unitTypesLoaded = true;
-        }
-      },
-      error: error => {
-        this.loading = false;
-        this.unitTypesLoaded = false;
-        this.loadError = true;
-        console.log(error);
-      }
-    });
-  }
-
-  fetchSuppliers() {
-    this.supplierService.getSuppliers().subscribe({
-      next: response => {
-        this.suppliers = response;
-        if (this.suppliers.length > 0) {
-          this.suppliersLoaded = true;
-        }
-        if (this.unitTypesLoaded && this.suppliersLoaded) {
-          this.loading = false;
-        }
-      },
-      error: error => {
-        this.loading = false;
-        this.suppliersLoaded = false;
-        this.loadError = true;
-        console.log(error);
-      }
-    })
-  }
-
   resetForm() {
     this.newProductForm.reset();
-    this.newProductForm.markAsPristine();
-    this.newProductForm.markAsUntouched();
   }
 
 }

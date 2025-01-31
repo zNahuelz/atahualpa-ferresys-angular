@@ -56,6 +56,9 @@
                 @if (newProductForm.get('buy_price')?.hasError('pattern')) {
                   <mat-error>El número ingresado no cumple con el formato requerido.</mat-error>
                 }
+                @if (newProductForm.get('buy_price')?.hasError('greaterThanZeroWithDecimals')) {
+                  <mat-error>El precio de compra debe ser igual o superior a 1.</mat-error>
+                }
               </mat-form-field>
             </div>
 
@@ -69,6 +72,9 @@
                 }
                 @if (newProductForm.get('sell_price')?.hasError('pattern')) {
                   <mat-error>El número ingresado no cumple con el formato requerido.</mat-error>
+                }
+                @if (newProductForm.get('sell_price')?.hasError('greaterThanZeroWithDecimals')) {
+                  <mat-error>El precio de venta debe ser igual o superior a 1.</mat-error>
                 }
               </mat-form-field>
             </div>
@@ -84,6 +90,9 @@
                 @if (newProductForm.get('stock')?.hasError('pattern')) {
                   <mat-error>El número ingresado no cumple con el formato requerido.</mat-error>
                 }
+                @if (newProductForm.get('stock')?.hasError('greaterThanZero')) {
+                  <mat-error>El stock debe ser igual o superior a 1.</mat-error>
+                }
               </mat-form-field>
             </div>
 
@@ -95,7 +104,7 @@
                     <mat-option [value]="s.id">{{ s.name }}</mat-option>
                   }
                 </mat-select>
-                @if (newProductForm.get('supplier_id')?.hasError('notZero')) {
+                @if (newProductForm.get('supplier_id')?.hasError('notZero') || newProductForm.get('supplier_id')?.hasError('required')) {
                   <mat-error>Debe seleccionar un proveedor.</mat-error>
                 }
               </mat-form-field>
@@ -109,7 +118,7 @@
                     <mat-option [value]="u.id">{{ u.name }}</mat-option>
                   }
                 </mat-select>
-                @if (newProductForm.get('unit_type_id')?.hasError('notZero')) {
+                @if (newProductForm.get('unit_type_id')?.hasError('notZero') || newProductForm.get('unit_type_id')?.hasError('required')) {
                   <mat-error>Debe seleccionar una presentación.</mat-error>
                 }
               </mat-form-field>
@@ -121,11 +130,12 @@
 
             <div class="row text-center ms-3 me-3 mt-3">
               <div class="col">
-                <button mat-fab extended class="me-2 bg-danger bg-gradient text-white" (click)="this.location.back()">
+                <button mat-fab extended class="me-2 bg-danger bg-gradient text-white" (click)="this.location.back()"
+                        type="button">
                   <mat-icon>cancel</mat-icon>
                   Cancelar
                 </button>
-                <button mat-fab extended class="me-2 bg-primary bg-gradient text-white"
+                <button mat-fab extended class="me-2 bg-primary bg-gradient text-white" type="button"
                         (click)="resetForm()">
                   <mat-icon>restart_alt</mat-icon>
                   Limpiar

@@ -10,7 +10,6 @@ export function greaterThanValidator(firstControl: string, secondControl: string
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const control = formGroup.get(firstControl);
     const compareControl = formGroup.get(secondControl);
-
     if (!control || !compareControl) return null;
     if (control.value === null || compareControl.value === null) return null;
 
@@ -31,5 +30,15 @@ export function greaterThanZeroWithDecimalsValidator(): ValidatorFn {
     const value = control.value;
     if (value === null || value === undefined || value === '') return null; // Ignore empty values
     return value > 0 && !isNaN(value) ? null : {greaterThanZeroWithDecimals: true}; // Ensure value is greater than 0
+  };
+}
+
+export function integersOnly(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const value = control.value;
+    if (value && !/^\d+$/.test(value)) {
+      return {positiveInteger: true};
+    }
+    return null;
   };
 }
