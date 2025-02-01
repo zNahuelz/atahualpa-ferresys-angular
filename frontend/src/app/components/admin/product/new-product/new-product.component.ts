@@ -5,7 +5,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {UnitTypeService} from '../../../../services/unit-type.service';
 import {SupplierService} from '../../../../services/supplier.service';
-import {UnitType} from '../../../../models/unit-type';
+import {UnitType} from '../../../../models/unit-type.model';
 import {Supplier} from '../../../../models/supplier.model';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';

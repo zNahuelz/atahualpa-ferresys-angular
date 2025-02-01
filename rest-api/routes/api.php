@@ -31,6 +31,7 @@ Route::group([
     Route::get('/by_name/{name}', [ProductController::class, 'getProductsByName']);
     Route::get('/by_desc/{description}',[ProductController::class, 'getProductsByDescription']);
     Route::get('/by_unit_type/{id}', [ProductController::class, 'getProductsByUnitType']);
+    Route::get('/by_supplier/{id}', [ProductController::class, 'getProductsBySupplier']);
 });
 
 Route::group([

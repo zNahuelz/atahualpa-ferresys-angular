@@ -1,7 +1,26 @@
-@if (loading && loadError) {
-  Error de carga.
-}
-@if (!loading) {
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando productos...</h3>
+  </div>
+} @else if (loadError) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <div class="row text-center">
+      <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 120px"></i>
+      <span class="fs-4 text-dark fw-lighter">Ups! Error en la carga de productos. Intente nuevamente.</span>
+    </div>
+  </div>
+} @else if (searchFailed) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <div class="row text-center">
+      <i class="bi bi-database-exclamation text-dark" style="font-size: 120px"></i>
+      <span class="fs-4 text-dark fw-lighter">Ups! No se encontraron productos con el criterio ingresado.</span>
+      <span class="fs-4 text-primary fw-bold mt-2 text-decoration-underline" (click)="reloadPage()">Volver</span>
+    </div>
+  </div>
+} @else if (!loading && !loadError && !searchFailed) {
   <div class="container mt-4">
     <form [formGroup]="searchForm" (ngSubmit)="searchProducts()" class="row text-end">
       <table>
@@ -36,7 +55,8 @@
 
           <mat-form-field class="me-2" appearance="outline" [hidden]="keywordHidden">
             <mat-label>Criterio</mat-label>
-            <input type="text" matInput formControlName="keyword" (keydown)="handleKeywordKeydown($event,searchForm.value.searchType!!)">
+            <input type="text" matInput formControlName="keyword"
+                   (keydown)="handleKeywordKeydown($event,searchForm.value.searchType!!)">
           </mat-form-field>
           <button mat-flat-button class="bg-success bg-gradient me-1" type="submit" [disabled]="searchForm.invalid">
             <mat-icon>search</mat-icon>
@@ -44,7 +64,7 @@
           </button>
           <button mat-flat-button class="bg-primary bg-gradient" type="button" (click)="reloadPage()">
             <mat-icon>restart_alt</mat-icon>
-            REFRESCAR
+            RESETEAR
           </button>
         </tr>
       </table>
@@ -93,9 +113,12 @@
         <td mat-cell *matCellDef="let p">
           <ng-container>
             <div class="btn-group btn-group-sm" role="group">
-              <button type="button" class="btn btn-success bg-gradient btn-sm"><i class="bi bi-pencil-square"></i></button>
-              <button type="button" class="btn btn-danger bg-gradient btn-sm"><i class="bi bi-trash-fill"></i></button>
-              <button type="button" class="btn btn-info bg-gradient btn-sm"><i class="bi bi-info-square"></i></button>
+              <button type="button" class="btn btn-success bg-gradient btn-sm" routerLink="/d/edit-product/{{p.id}}"><i class="bi bi-pencil-square"></i>
+              </button>
+              <button type="button" class="btn btn-danger bg-gradient btn-sm" (click)="showDeleteDialog(p)"><i
+                class="bi bi-trash-fill"></i></button>
+              <button type="button" class="btn btn-info bg-gradient btn-sm" (click)="showProductDetail(p)"><i
+                class="bi bi-info-square"></i></button>
             </div>
           </ng-container>
         </td>
@@ -104,7 +127,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <div class="row mt-3">
+    <div class="row mt-3" [hidden]="hidePagination">
       <div class="col text-end">
         <div class="btn-group" role="group">
           <button type="button" class="btn btn-primary bg-gradient" (click)="prevPage()" [disabled]="isFirstPage()">
@@ -118,15 +141,6 @@
           </button>
         </div>
       </div>
-
     </div>
   </div>
-} @else if (loading && !loadError) {
-  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
-    <mat-spinner></mat-spinner>
-  </div>
-  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
-    <h3 class="fw-light">Cargando productos...</h3>
-  </div>
-
 }

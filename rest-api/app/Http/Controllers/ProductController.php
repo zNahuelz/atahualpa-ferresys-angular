@@ -92,7 +92,7 @@ class ProductController extends Controller
 
     public function getProductsByName($name)
     {
-        $products = Product::with(['supplier','unitType'])->where('name','LIKE','%'.$name.'%')->paginate(10);
+        $products = Product::with(['supplier','unitType'])->where('name','LIKE','%'.$name.'%')->get();
         return response()->json($products);
     }
 
@@ -106,6 +106,14 @@ class ProductController extends Controller
     {
         $products = Product::with(['supplier','unitType'])->whereHas('unitType', function($query) use ($unitType){
             $query->where('id',$unitType);
+        })->get();
+        return response()->json($products);
+    }
+
+    public function getProductsBySupplier($supplier)
+    {
+        $products = Product::with(['supplier','unitType'])->whereHas('supplier', function($query) use ($supplier){
+            $query->where('id',$supplier);
         })->get();
         return response()->json($products);
     }

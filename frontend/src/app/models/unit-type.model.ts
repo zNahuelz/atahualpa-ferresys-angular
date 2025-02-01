@@ -1,6 +1,6 @@
 import {Deserializable} from './deserializable.entity';
 
-export class UnitType  implements Deserializable {
+export class UnitType implements Deserializable {
   id?: number;
   name?: string;
   created_at?: Date;

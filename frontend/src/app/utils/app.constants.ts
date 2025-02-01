@@ -4,11 +4,14 @@ export const ERROR_MESSAGES = {
   INVALID_SUPPLIER: 'El proveedor seleccionado no se encuentra disponible. Intente nuevamente.',
   INVALID_UNIT_TYPE: 'La presentación seleccionada no se encuentra disponible. Intente nuevamente.',
   SERVER_ERROR: 'Error interno del servidor. Intente nuevamente, si el error persiste comuniquese con administración.',
+  PRODUCT_NOT_FOUND: 'Oops! Producto no encontrado.'
 }
 
 export const SUCCESS_MESSAGES = {
   SUCCESS_TAG: 'Operación exitosa.',
-  PRODUCT_CREATED: 'Producto creado correctamente.'
+  PRODUCT_CREATED: 'Producto creado correctamente.',
+  PRODUCT_DELETED: 'Producto eliminado correctamente.',
+
 }
 
 export const PRODUCT_SEARCH_MODES = [

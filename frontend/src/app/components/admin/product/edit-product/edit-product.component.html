@@ -1,0 +1,14 @@
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando producto...</h3>
+  </div>
+} @else {
+  <h1>WIP!</h1>
+  <p>edit-product works!</p>
+  {{ product.id }}
+  {{ product.name ?? "N/A" }}
+}
+

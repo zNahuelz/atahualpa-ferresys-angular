@@ -1,5 +1,6 @@
 import {Deserializable} from './deserializable.entity';
-import {UnitType} from './unit-type';
+import {UnitType} from './unit-type.model';
+import {Supplier} from './supplier.model';
 
 export class Product implements Deserializable {
   id?: number;
@@ -14,8 +15,9 @@ export class Product implements Deserializable {
   created_at?: Date;
   updated_at?: Date;
   unit_type?: UnitType;
+  supplier?: Supplier;
 
-  constructor(name: string, description: string, buyPrice: number, sellPrice: number, stock: number, supplier: number, unitType: number, visible: boolean ) {
+  constructor(name?: string, description?: string, buyPrice?: number, sellPrice?: number, stock?: number, supplier?: number, unitType?: number, visible?: boolean ) {
     this.name = name;
     this.description = description;
     this.buy_price = buyPrice;

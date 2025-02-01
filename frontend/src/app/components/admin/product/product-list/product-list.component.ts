@@ -1,10 +1,9 @@
-import {Component, ElementRef, inject, ViewChild} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {Product} from '../../../../models/product.model';
 import {ProductService} from '../../../../services/product.service';
-import {NotificationService} from '../../../../services/notification.service';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import {MatSort, MatSortModule} from '@angular/material/sort';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -13,12 +12,16 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {PRODUCT_SEARCH_MODES as SEARCH_MODES} from '../../../../utils/app.constants';
-import {UnitType} from '../../../../models/unit-type';
+import {UnitType} from '../../../../models/unit-type.model';
 import {Supplier} from '../../../../models/supplier.model';
 import {UnitTypeService} from '../../../../services/unit-type.service';
 import {SupplierService} from '../../../../services/supplier.service';
-import {allowIntegers} from '../../../../utils/app.helpers';
 import {integersOnly} from '../../../../validators/custom-validators'
+import {MatDialog} from '@angular/material/dialog';
+import {ProductDetailDialogComponent} from '../product-detail-dialog/product-detail-dialog.component';
+import Swal from 'sweetalert2';
+import {ERROR_MESSAGES as em, SUCCESS_MESSAGES as sm} from '../../../../utils/app.constants';
+import {RouterModule} from '@angular/router';
 
 
 @Component({
@@ -35,6 +38,7 @@ import {integersOnly} from '../../../../validators/custom-validators'
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
+    RouterModule
   ],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
@@ -43,15 +47,17 @@ export class ProductListComponent {
   private productService = inject(ProductService);
   private supplierService = inject(SupplierService);
   private unitTypeService = inject(UnitTypeService);
+  private dialog = inject(MatDialog);
   products: Product[] = [];
   unitTypes: UnitType[] = [];
   suppliers: Supplier[] = [];
 
   loading = false;
   loadError = false;
-  searchCompleted = false;
+  hidePagination = false;
   unitTypesLoaded = false;
   suppliersLoaded = false;
+  searchFailed = false;
 
   unitTypesHidden = true;
   suppliersHidden = true;
@@ -64,11 +70,11 @@ export class ProductListComponent {
   dataSource = new MatTableDataSource<Product>();
   protected readonly SEARCH_MODES = SEARCH_MODES;
   displayedColumns = [
-    'id', 'name', 'buy_price', 'sell_price', 'stock', 'unit_type', 'supplier','toolbox'
+    'id', 'name', 'buy_price', 'sell_price', 'stock', 'unit_type', 'supplier', 'toolbox'
   ]
 
   searchForm = new FormGroup({
-    keyword: new FormControl('', [Validators.required,Validators.minLength(1),integersOnly()]),
+    keyword: new FormControl('', [Validators.required, Validators.minLength(1), integersOnly()]),
     searchType: new FormControl(0, [Validators.required]),
     selectedSupplier: new FormControl(null, []),
     selectedUnitType: new FormControl(null, []),
@@ -95,9 +101,8 @@ export class ProductListComponent {
         this.loading = false;
       }),
       error: (error) => {
-        this.loading = true;
+        this.loading = false;
         this.loadError = true;
-        console.log(error);
       }
     });
   }
@@ -111,9 +116,7 @@ export class ProductListComponent {
         }
       },
       error: error => {
-        this.loading = false;
         this.unitTypesLoaded = false;
-        this.loadError = true;
       }
     });
   }
@@ -125,14 +128,9 @@ export class ProductListComponent {
         if (this.suppliers.length > 0) {
           this.suppliersLoaded = true;
         }
-        if (this.unitTypesLoaded && this.suppliersLoaded) {
-          this.loading = false;
-        }
       },
       error: error => {
-        this.loading = false;
         this.suppliersLoaded = false;
-        this.loadError = true;
       }
     })
   }
@@ -143,45 +141,56 @@ export class ProductListComponent {
     const unitTypeControl = this.searchForm.get('selectedUnitType');
     switch (val) {
       case 0:
-        console.log('POR ID')
+        //By ID
         this.keywordHidden = false;
         this.unitTypesHidden = true;
         this.suppliersHidden = true;
-        keywordControl?.setValidators([Validators.required,Validators.minLength(1),integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnly()]);
         suppliersControl?.clearValidators();
         unitTypeControl?.clearValidators();
         keywordControl?.reset();
-        //TODO: RESET SELECTS ON CHANGE TOO!
+        suppliersControl?.reset();
+        unitTypeControl?.reset();
         break;
       case 1:
-        console.log('POR NOMBRE')
+        //By name
         this.keywordHidden = false;
         this.unitTypesHidden = true;
         this.suppliersHidden = true;
-        keywordControl?.setValidators([Validators.required,Validators.minLength(3)]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(3)]);
         suppliersControl?.clearValidators();
         unitTypeControl?.clearValidators();
         keywordControl?.reset();
+        suppliersControl?.reset();
+        unitTypeControl?.reset();
         break;
       case 2:
-        console.log('POR PROVEEDOR')
-        this.keywordHidden = true;
-        this.unitTypesHidden = true;
-        this.suppliersHidden = false;
-        keywordControl?.clearValidators();
-        unitTypeControl?.clearValidators();
-        suppliersControl?.setValidators([Validators.required]);
-        keywordControl?.reset();
+        //By Supplier
+        if (this.suppliersLoaded) {
+          this.keywordHidden = true;
+          this.unitTypesHidden = true;
+          this.suppliersHidden = false;
+          keywordControl?.clearValidators();
+          unitTypeControl?.clearValidators();
+          suppliersControl?.setValidators([Validators.required]);
+          keywordControl?.reset();
+          suppliersControl?.reset();
+          unitTypeControl?.reset();
+        }
         break;
       case 3:
-        console.log('POR PRESENTACION')
-        this.keywordHidden = true;
-        this.unitTypesHidden = false;
-        this.suppliersHidden = true;
-        keywordControl?.clearValidators();
-        suppliersControl?.clearValidators();
-        unitTypeControl?.setValidators([Validators.required]);
-        keywordControl?.reset();
+        //By Unit Type
+        if (this.unitTypesLoaded) {
+          this.keywordHidden = true;
+          this.unitTypesHidden = false;
+          this.suppliersHidden = true;
+          keywordControl?.clearValidators();
+          suppliersControl?.clearValidators();
+          unitTypeControl?.setValidators([Validators.required]);
+          keywordControl?.reset();
+          suppliersControl?.reset();
+          unitTypeControl?.reset();
+        }
         break;
       default:
         break;
@@ -191,7 +200,7 @@ export class ProductListComponent {
     unitTypeControl?.updateValueAndValidity();
   }
 
-  handleKeywordKeydown(e: KeyboardEvent,searchType: number) {
+  handleKeywordKeydown(e: KeyboardEvent, searchType: number) {
     if (searchType === 0) {
       // Allow: backspace, delete, tab, escape, enter, and numbers
       if (
@@ -205,26 +214,136 @@ export class ProductListComponent {
     }
   }
 
-//TODO: CONTINUE HERE (MAYBE)!!
   searchProducts() {
+    const keywordControl = this.searchForm.get('keyword');
+    const suppliersControl = this.searchForm.get('selectedSupplier');
+    const unitTypeControl = this.searchForm.get('selectedUnitType');
     switch (this.searchForm.value.searchType) {
       case 0:
-        console.log('POR ID')
+        this.fetchProductById(parseInt(keywordControl?.value!!));
         break;
       case 1:
-        console.log('POR NOMBRE')
+        this.fetchProductsByName(keywordControl?.value!!);
         break;
       case 2:
-        console.log('POR PROVEEDOR')
+        this.fetchProductsBySupplier(suppliersControl?.value!!);
         break;
       case 3:
-        console.log('POR PRESENTACION')
+        this.fetchProductsByUnitType(unitTypeControl?.value!!);
         break;
       default:
         break;
     }
   }
 
+  fetchProductById(id: number) {
+    this.productService.getProductById(id).subscribe({
+      next: response => {
+        this.showProductDetail(response);
+      },
+      error: error => {
+        Swal.fire(em.PRODUCT_NOT_FOUND, `El producto de ID: ${id} no ha sido encontrado o no esta disponible.`, 'info');
+      }
+    });
+  }
+
+  fetchProductsByName(name: string) {
+    this.loading = true;
+    this.productService.getProductsByName(name).subscribe({
+      next: response => {
+        this.handleProductSearchResponse(response);
+      },
+      error: error => {
+        this.handleProductSearchError();
+      }
+    });
+  }
+
+  fetchProductsBySupplier(supplierId: number) {
+    this.loading = true;
+    this.productService.getProductsBySupplier(supplierId).subscribe({
+      next: response => {
+        this.handleProductSearchResponse(response);
+      },
+      error: error => {
+        this.handleProductSearchError();
+      }
+    })
+  }
+
+  fetchProductsByUnitType(unitTypeId: number) {
+    this.loading = true;
+    this.productService.getProductsByUnitType(unitTypeId).subscribe({
+      next: response => {
+        this.handleProductSearchResponse(response);
+      },
+      error: error => {
+        this.handleProductSearchError();
+      }
+    })
+  }
+
+  handleProductSearchResponse(response: Product[]) {
+    this.products = response;
+    this.dataSource = new MatTableDataSource<Product>(this.products);
+    if (this.products.length <= 0) {
+      this.searchFailed = true;
+      this.loading = false;
+      this.hidePagination = true;
+    } else {
+      this.hidePagination = true;
+      this.loading = false;
+      this.searchFailed = false;
+    }
+  }
+
+  handleProductSearchError() {
+    this.loading = false;
+    this.searchFailed = true;
+    this.hidePagination = true;
+    this.loadError = true;
+  }
+
+  showProductDetail(product: Product) {
+    const dialogRef = this.dialog.open(ProductDetailDialogComponent, {
+      width: '600px',
+      height: '560px',
+      data: product,
+    });
+  }
+
+  showDeleteDialog(p: Product) {
+    let text = `Usted esta a punto de eliminar el siguiente producto: ${p.name}`;
+    Swal.fire({
+      title: 'Confirmación de Solicitud',
+      text: text,
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Eliminar',
+      confirmButtonColor: '#54BE3D',
+      cancelButtonColor: '#D3211F',
+    }).then((op) => {
+      if (op.isConfirmed) {
+        this.deleteProduct(p.id!!);
+      }
+    });
+  }
+
+  deleteProduct(id: number) {
+    this.productService.deleteProduct(id).subscribe({
+      next: response => {
+        Swal.fire(sm.SUCCESS_TAG, sm.PRODUCT_DELETED, 'success').then((r) => {
+          if (r.isDismissed || r.dismiss || r.isConfirmed) {
+            window.location.reload();
+          }
+        });
+      },
+      error: error => {
+        Swal.fire(em.ERROR_TAG, em.PRODUCT_NOT_FOUND, 'error');
+      }
+    })
+  }
 
   getTotalPages(): number {
     return Math.ceil(this.totalItems / this.pageSize);
@@ -252,7 +371,7 @@ export class ProductListComponent {
     return this.currentPage === 1;
   }
 
-  reloadPage(){
+  reloadPage() {
     window.location.reload();
   }
 }

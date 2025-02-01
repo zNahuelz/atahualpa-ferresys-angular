@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpWrapperService} from './http-wrapper.service';
-import {UnitType} from '../models/unit-type';
+import {UnitType} from '../models/unit-type.model';
 import {Observable} from 'rxjs';
 
 @Injectable({
