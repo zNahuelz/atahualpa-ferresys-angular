@@ -1,0 +1,113 @@
+<div class="row mt-5">
+  <div class="col-3"></div>
+  <div class="col-6">
+    <div class="card border-primary">
+      <div class="card-header bg-primary text-white text-center fw-bold">
+        <i class="bi bi-building-add"></i> NUEVO PROVEEDOR
+      </div>
+      <div class="card-body">
+        <form [formGroup]="newSupplierForm" (ngSubmit)="onSubmit()">
+          <div class="row ms-3 me-3">
+            <mat-form-field class="form-field mb-2" appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input type="text" matInput formControlName="name"/>
+              @if (newSupplierForm.get('name')?.hasError('required')) {
+                <mat-error>Debe ingresar un nombre.</mat-error>
+              }
+              @if (newSupplierForm.get('name')?.hasError('minLength') || newSupplierForm.get('name')?.hasError('maxLength')) {
+                <mat-error>El nombre debe tener entre 2 y 150 carácteres.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="row ms-3 me-3">
+            <mat-form-field class="form-field mb-2" appearance="outline">
+              <mat-label>RUC</mat-label>
+              <input type="number" matInput formControlName="ruc" (keydown)="allowIntegers($event)"/>
+              @if (newSupplierForm.get('ruc')?.hasError('required')) {
+                <mat-error>Debe ingresar un RUC.</mat-error>
+              }
+              @if (newSupplierForm.get('ruc')?.hasError('pattern')) {
+                <mat-error>El RUC debe comenzar con 10 o 20 y tener máximo 11 carácteres.</mat-error>
+              }
+              @if (newSupplierForm.get('ruc')?.hasError('minLength') || newSupplierForm.get('ruc')?.hasError('maxLength')) {
+                <mat-error>El RUC debe tener máximo 11 carácteres.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="row ms-3 me-3">
+            <mat-form-field class="form-field mb-2" appearance="outline">
+              <mat-label>Dirección</mat-label>
+              <input type="text" matInput formControlName="address"/>
+              @if (newSupplierForm.get('address')?.hasError('required')) {
+                <mat-error>Debe ingresar una dirección.</mat-error>
+              }
+              @if (newSupplierForm.get('address')?.hasError('minLength') || newSupplierForm.get('address')?.hasError('maxLength')) {
+                <mat-error>La dirección debe tener entre 5 y 100 carácteres.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="row ms-3 me-3">
+            <mat-form-field class="form-field mb-2" appearance="outline">
+              <mat-label>Teléfono</mat-label>
+              <input type="number" matInput formControlName="phone" (keydown)="allowIntegers($event)"/>
+              @if (newSupplierForm.get('phone')?.hasError('required')) {
+                <mat-error>Debe ingresar un número de teléfono.</mat-error>
+              }
+              @if (newSupplierForm.get('phone')?.hasError('minLength') || newSupplierForm.get('phone')?.hasError('maxLength')) {
+                <mat-error>El número de teléfono debe tener entre 6 y 15 carácteres.</mat-error>
+              }
+              @if (newSupplierForm.get('phone')?.hasError('pattern')) {
+                <mat-error>El teléfono debe contener solo números.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+
+          <div class="row ms-3 me-3">
+            <mat-form-field class="form-field mb-2" appearance="outline">
+              <mat-label>E-Mail</mat-label>
+              <input type="text" matInput formControlName="email"/>
+              @if (newSupplierForm.get('email')?.hasError('required')) {
+                <mat-error>Debe ingresar una dirección de E-Mail.</mat-error>
+              }
+              @if (newSupplierForm.get('email')?.hasError('email')) {
+                <mat-error>El E-Mail debe cumplir el formato EMAIL&#64;DOMINIO.COM.</mat-error>
+              }
+              @if (newSupplierForm.get('email')?.hasError('maxlength')) {
+                <mat-error>La E-Mail debe tener como máximo 50 carácteres.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="row ms-3 me-3">
+            <mat-form-field class="form-field mb-2" appearance="outline">
+              <mat-label>Descripción</mat-label>
+              <textarea matInput formControlName="description"></textarea>
+              @if (newSupplierForm.get('description')?.hasError('maxlength')) {
+                <mat-error>La descripción debe tener como máximo 150 carácteres.</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <div class="row text-center ms-3 me-3 mt-3">
+            <div class="col">
+              <button mat-fab extended class="me-2 bg-danger bg-gradient text-white"
+                      type="button" (click)="this.location.back()">
+                <mat-icon>cancel</mat-icon>
+                Cancelar
+              </button>
+              <button mat-fab extended class="me-2 bg-primary bg-gradient text-white" type="button"
+                      (click)="resetForm()">
+                <mat-icon>restart_alt</mat-icon>
+                Limpiar
+              </button>
+              <button mat-fab extended class="bg-success bg-gradient text-white" [disabled]="newSupplierForm.invalid"
+                      type="submit">
+                <mat-icon>save</mat-icon>
+                Guardar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-3"></div>
+</div>

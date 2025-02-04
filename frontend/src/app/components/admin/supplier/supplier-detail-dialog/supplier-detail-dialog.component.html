@@ -1,0 +1,46 @@
+<h2 mat-dialog-title class="text-center">Detalle de Proveedor</h2>
+<mat-dialog-content>
+  <table class="table table-primary-subtle table-striped table-bordered border-dark">
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <th>{{ data.id }}</th>
+    </tr>
+    <tr>
+      <th>NOMBRE</th>
+      <th>{{ data.name }}</th>
+    </tr>
+    <tr>
+      <th>RUC</th>
+      <th>{{ data.ruc }}</th>
+    </tr>
+    <tr>
+      <th>DIRECCIÓN</th>
+      <th>{{ data.address }}</th>
+    </tr>
+    <tr>
+      <th>TELÉFONO</th>
+      <th>{{ data.phone }}</th>
+    </tr>
+    <tr>
+      <th>E-MAIL</th>
+      <th>{{ data.email }}</th>
+    </tr>
+    <tr>
+      <th>DESCRIPCIÓN</th>
+      <th>{{ data.description }}</th>
+    </tr>
+    <tr>
+      <th>FECHA DE INGRESO</th>
+      <th>{{ data.created_at | date }}</th>
+    </tr>
+    <tr>
+      <th>ÚLTIMA MODIFICACIÓN</th>
+      <th>{{ data.updated_at | date }}</th>
+    </tr>
+    </tbody>
+  </table>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="closeDialog()">Cerrar</button>
+</mat-dialog-actions>

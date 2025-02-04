@@ -23,11 +23,11 @@ export class ProductService {
     return this.httpWrapper.GET<Product[]>(`${this.endpoint}/by_name/${name}`);
   }
 
-  getProductsByUnitType(unitTypeId: number): Observable<Product[]>{
+  getProductsByUnitType(unitTypeId: number): Observable<Product[]> {
     return this.httpWrapper.GET<Product[]>(`${this.endpoint}/by_unit_type/${unitTypeId}`);
   }
 
-  getProductsBySupplier(supplierId: number): Observable<Product[]>{
+  getProductsBySupplier(supplierId: number): Observable<Product[]> {
     return this.httpWrapper.GET<Product[]>(`${this.endpoint}/by_supplier/${supplierId}`);
   }
 
@@ -39,7 +39,11 @@ export class ProductService {
     return this.httpWrapper.POST<any>(`${this.endpoint}`, product);
   }
 
-  deleteProduct(id: number): Observable<ApiResponse>{
+  updateProduct(product: Product, id: number): Observable<ApiResponse> {
+    return this.httpWrapper.PUT<ApiResponse>(`${this.endpoint}/${id}`, product);
+  }
+
+  deleteProduct(id: number): Observable<ApiResponse> {
     return this.httpWrapper.DELETE<ApiResponse>(`${this.endpoint}/${id}`);
   }
 

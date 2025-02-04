@@ -50,11 +50,11 @@
         Proveedores
       </button>
       <mat-menu #supplierMenu="matMenu">
-        <button mat-menu-item routerLink="/">
+        <button mat-menu-item routerLink="/d/new-supplier">
           <mat-icon>add_circle</mat-icon>
           Nuevo
         </button>
-        <button mat-menu-item routerLink="/about">
+        <button mat-menu-item routerLink="/d/supplier">
           <mat-icon>view_list</mat-icon>
           Listado
         </button>
@@ -78,6 +78,10 @@
         <mat-icon class="text-dark">arrow_drop_down</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu">
+        <button mat-menu-item routerLink="/d/profile">
+          <mat-icon>person</mat-icon>
+          <span>Mi Cuenta</span>
+        </button>
         <button mat-menu-item>
           <mat-icon>settings</mat-icon>
           <span>Configuración</span>

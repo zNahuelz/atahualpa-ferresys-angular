@@ -51,6 +51,7 @@ Route::group([
 ], function($router) {
     Route::post('/',[SupplierController::class,'createSupplier']);
     Route::get('/', [SupplierController::class, 'getSuppliers']);
+    Route::get('/p', [SupplierController::class, 'getSuppliersPaginated']);
     Route::get('/{id}', [SupplierController::class, 'getSupplier']);
     Route::get('/by_ruc/{ruc}', [SupplierController::class, 'getSupplierByRUC']);
     Route::get('/by_name/{name}', [SupplierController::class, 'getSupplierByName']);

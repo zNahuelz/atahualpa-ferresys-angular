@@ -18,7 +18,7 @@ class SupplierController extends Controller
             'address' => ['required','max:100'],
             'phone' => ['required','string','min:6','max:15'],
             'email' => ['required','email','max:50'],
-            'description' => ['string','max:150'],
+            'description' => ['max:150'],
         ]);
 
         $supplier = Supplier::create([
@@ -49,7 +49,7 @@ class SupplierController extends Controller
             'address' => ['required','max:100'],
             'phone' => ['required','string','min:6','max:15'],
             'email' => ['required','email','max:50'],
-            'description' => ['string','max:150'],
+            'description' => ['max:150'],
             'visible' => ['required','boolean']
         ]);
 
@@ -80,6 +80,11 @@ class SupplierController extends Controller
     public function getSuppliers()
     {
         $suppliers = Supplier::all();
+        return response()->json($suppliers);
+    }
+
+    public function getSuppliersPaginated(){
+        $suppliers = Supplier::paginate(10);
         return response()->json($suppliers);
     }
 
