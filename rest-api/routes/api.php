@@ -41,6 +41,7 @@ Route::group([
     Route::post('/', [UnitTypeController::class, 'createUnitType']);
     Route::put('/{id}', [UnitTypeController::class, 'updateUnitType']);
     Route::get('/', [UnitTypeController::class, 'getUnitTypes']);
+    Route::get('/p', [UnitTypeController::class, 'getUnitTypesPaginated']);
     Route::get('/{id}', [UnitTypeController::class, 'getUnitType']);
     Route::get('/by_name/{name}', [UnitTypeController::class, 'getUnitTypeByName']);
 });

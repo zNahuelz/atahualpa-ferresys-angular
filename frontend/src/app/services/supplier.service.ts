@@ -37,6 +37,10 @@ export class SupplierService {
     return this.httpWrapper.POST(`${this.endpoint}`,supplier);
   }
 
+  updateSupplier(supplier: Supplier, id: number): Observable<ApiResponse> {
+    return this.httpWrapper.PUT(`${this.endpoint}/${id}`, supplier);
+  }
+
   deleteSupplier(id: number): Observable<ApiResponse> {
     return this.httpWrapper.DELETE(`${this.endpoint}/${id}`);
   }

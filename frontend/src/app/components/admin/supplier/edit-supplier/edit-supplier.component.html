@@ -6,5 +6,121 @@
     <h3 class="fw-light">Cargando proveedor...</h3>
   </div>
 } @else {
-  Supplier loaded.
+  <div class="row mt-5">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <div class="card border-primary">
+        <div class="card-header bg-primary text-white text-center fw-bold">
+          <i class="bi bi-pencil-square"></i> EDITAR PROVEEDOR
+        </div>
+        <div class="card-body">
+          <form [formGroup]="editSupplierForm" (ngSubmit)="onSubmit()">
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput formControlName="name" [value]="supplier.name"/>
+                @if (editSupplierForm.get('name')?.hasError('required')) {
+                  <mat-error>Debe ingresar un nombre.</mat-error>
+                }
+                @if (editSupplierForm.get('name')?.hasError('minLength') || editSupplierForm.get('name')?.hasError('maxLength')) {
+                  <mat-error>El nombre debe tener entre 2 y 150 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>RUC</mat-label>
+                <input type="number" matInput formControlName="ruc" (keydown)="allowIntegers($event)" [value]="supplier.ruc"/>
+                @if (editSupplierForm.get('ruc')?.hasError('required')) {
+                  <mat-error>Debe ingresar un RUC.</mat-error>
+                }
+                @if (editSupplierForm.get('ruc')?.hasError('pattern')) {
+                  <mat-error>El RUC debe comenzar con 10 o 20 y tener máximo 11 carácteres.</mat-error>
+                }
+                @if (editSupplierForm.get('ruc')?.hasError('minLength') || editSupplierForm.get('ruc')?.hasError('maxLength')) {
+                  <mat-error>El RUC debe tener máximo 11 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Dirección</mat-label>
+                <input type="text" matInput formControlName="address" [value]="supplier.address"/>
+                @if (editSupplierForm.get('address')?.hasError('required')) {
+                  <mat-error>Debe ingresar una dirección.</mat-error>
+                }
+                @if (editSupplierForm.get('address')?.hasError('minLength') || editSupplierForm.get('address')?.hasError('maxLength')) {
+                  <mat-error>La dirección debe tener entre 5 y 100 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Teléfono</mat-label>
+                <input type="number" matInput formControlName="phone" (keydown)="allowIntegers($event)" [value]="supplier.phone"/>
+                @if (editSupplierForm.get('phone')?.hasError('required')) {
+                  <mat-error>Debe ingresar un número de teléfono.</mat-error>
+                }
+                @if (editSupplierForm.get('phone')?.hasError('minLength') || editSupplierForm.get('phone')?.hasError('maxLength')) {
+                  <mat-error>El número de teléfono debe tener entre 6 y 15 carácteres.</mat-error>
+                }
+                @if (editSupplierForm.get('phone')?.hasError('pattern')) {
+                  <mat-error>El teléfono debe contener solo números.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>E-Mail</mat-label>
+                <input type="text" matInput formControlName="email" [value]="supplier.email"/>
+                @if (editSupplierForm.get('email')?.hasError('required')) {
+                  <mat-error>Debe ingresar una dirección de E-Mail.</mat-error>
+                }
+                @if (editSupplierForm.get('email')?.hasError('email')) {
+                  <mat-error>El E-Mail debe cumplir el formato EMAIL&#64;DOMINIO.COM.</mat-error>
+                }
+                @if (editSupplierForm.get('email')?.hasError('maxlength')) {
+                  <mat-error>La E-Mail debe tener como máximo 50 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="row ms-3 me-3">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <textarea matInput formControlName="description" [value]="supplier.description"></textarea>
+                @if (editSupplierForm.get('description')?.hasError('maxlength')) {
+                  <mat-error>La descripción debe tener como máximo 150 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="row ms-3 me-3">
+              <mat-slide-toggle formControlName="visible" [checked]="supplier.visible">Visible</mat-slide-toggle>
+            </div>
+            <div class="row text-center ms-3 me-3 mt-3">
+              <div class="col">
+                <button mat-fab extended class="me-2 bg-danger bg-gradient text-white"
+                        type="button" (click)="this.location.back()">
+                  <mat-icon>cancel</mat-icon>
+                  Cancelar
+                </button>
+                <button mat-fab extended class="me-2 bg-primary bg-gradient text-white" type="button"
+                        (click)="resetForm()">
+                  <mat-icon>restart_alt</mat-icon>
+                  Limpiar
+                </button>
+                <button mat-fab extended class="bg-success bg-gradient text-white" [disabled]="editSupplierForm.invalid"
+                        type="submit">
+                  <mat-icon>save</mat-icon>
+                  Guardar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
 }

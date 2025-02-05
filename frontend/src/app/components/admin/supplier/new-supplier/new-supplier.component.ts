@@ -60,7 +60,6 @@ export class NewSupplierComponent {
           });
       },
       error: error => {
-        console.log(error);
         if (error.errors.ruc) {
           Swal.fire(em.ERROR_TAG, em.RUC_TAKEN, 'error').then((r) => {
             this.newSupplierForm.get('ruc')!!.setValue('');

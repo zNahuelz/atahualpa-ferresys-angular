@@ -154,8 +154,6 @@ export class EditProductComponent {
       this.editProductForm.value.unit_type_id!!,
       this.editProductForm.value.visible!!
     );
-    console.log(product);
-
     this.productService.updateProduct(product, parseInt(this.productId!!)).subscribe({
       next: response => {
         this.submitting = false;

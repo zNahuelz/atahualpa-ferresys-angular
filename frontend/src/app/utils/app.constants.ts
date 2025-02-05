@@ -8,6 +8,8 @@ export const ERROR_MESSAGES = {
   PRODUCT_UPDATE_FAILED: 'Error al actualizar el producto. Intente nuevamente, si el error persiste comuniquese con administración',
   RUC_TAKEN: 'El RUC ingresado ya se encuentra en uso por otro proveedor.',
   SUPPLIER_NOT_FOUND: 'Oops! Proveedor no encontrado.',
+  SUPPLIER_UPDATE_FAILED: 'Error al actualizar el proveedor. Intente nuevamente, si el error persiste comuniquese con administración',
+  UNIT_TYPE_TAKEN: 'El nombre de presentación ingresado ya se encuentra en uso. Intente nuevamente.',
 }
 
 export const SUCCESS_MESSAGES = {
@@ -18,6 +20,9 @@ export const SUCCESS_MESSAGES = {
   SUPPLIER_CREATED: 'Proveedor creado correctamente.',
   SUPPLIER_DELETED: 'Proveedor eliminado correctamente.',
   SUPPLIER_UPDATED: 'Proveedor actualizado correctamente.',
+  UNIT_TYPE_CREATED: 'Presentación creada correctamente.',
+  UNIT_TYPE_DELETED: 'Presentación eliminada con correctamente.',
+  UNIT_TYPE_UPDATED: 'Presentación actualizada correctamente.'
 }
 
 export const PRODUCT_SEARCH_MODES = [
@@ -31,4 +36,9 @@ export const SUPPLIER_SEARCH_MODES = [
   'POR ID',
   'POR NOMBRE',
   'POR RUC',
+]
+
+export const UNIT_TYPE_SEARCH_MODES = [
+  'POD ID',
+  'POR NOMBRE',
 ]

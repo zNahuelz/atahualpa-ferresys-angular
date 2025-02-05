@@ -49,6 +49,11 @@ class UnitTypeController extends Controller
         return response()->json($unitTypes);
     }
 
+    public function getUnitTypesPaginated(){
+        $unitTypes = UnitType::paginate(10);
+        return response()->json($unitTypes);
+    }
+
     public function getUnitType($id)
     {
         $unitType = UnitType::find($id);
