@@ -10,6 +10,8 @@ export const ERROR_MESSAGES = {
   SUPPLIER_NOT_FOUND: 'Oops! Proveedor no encontrado.',
   SUPPLIER_UPDATE_FAILED: 'Error al actualizar el proveedor. Intente nuevamente, si el error persiste comuniquese con administración',
   UNIT_TYPE_TAKEN: 'El nombre de presentación ingresado ya se encuentra en uso. Intente nuevamente.',
+  UNIT_TYPE_NOT_FOUND: 'Oops! Presentación no encontrada.',
+  CUSTOMER_NOT_FOUND: 'Oops! Cliente no encontrado.',
 }
 
 export const SUCCESS_MESSAGES = {
@@ -22,7 +24,8 @@ export const SUCCESS_MESSAGES = {
   SUPPLIER_UPDATED: 'Proveedor actualizado correctamente.',
   UNIT_TYPE_CREATED: 'Presentación creada correctamente.',
   UNIT_TYPE_DELETED: 'Presentación eliminada con correctamente.',
-  UNIT_TYPE_UPDATED: 'Presentación actualizada correctamente.'
+  UNIT_TYPE_UPDATED: 'Presentación actualizada correctamente.',
+  UNIT_TYPE_DETAIL: 'Detalle de Presentación',
 }
 
 export const PRODUCT_SEARCH_MODES = [
@@ -39,6 +42,11 @@ export const SUPPLIER_SEARCH_MODES = [
 ]
 
 export const UNIT_TYPE_SEARCH_MODES = [
-  'POD ID',
+  'POR ID',
   'POR NOMBRE',
+]
+
+export const CUSTOMER_SEARCH_MODES = [
+  'POR ID',
+  'POR DNI',
 ]

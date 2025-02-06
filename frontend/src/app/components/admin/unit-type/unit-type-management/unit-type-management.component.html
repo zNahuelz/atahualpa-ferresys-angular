@@ -225,7 +225,7 @@
 
               <mat-form-field class="me-2" appearance="outline">
                 <mat-label>Criterio</mat-label>
-                <input type="text" matInput formControlName="keyword">
+                <input type="text" matInput formControlName="keyword" (keydown)="handleKeywordKeydown($event,searchForm.value.searchType!!)">
               </mat-form-field>
               <button mat-mini-fab class="bg-success bg-gradient me-1" type="submit" [disabled]="searchForm.invalid">
                 <mat-icon class="text-white">search</mat-icon>

@@ -12,12 +12,11 @@ import {
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatIcon} from '@angular/material/icon';
 import {MatSort} from '@angular/material/sort';
-import {RouterLink} from '@angular/router';
 import {DatePipe, Location} from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatButton, MatFabButton, MatIconButton, MatMiniFabButton} from '@angular/material/button';
+import {MatFabButton, MatMiniFabButton} from '@angular/material/button';
 import Swal from 'sweetalert2';
 import {ERROR_MESSAGES as em, SUCCESS_MESSAGES as sm, UNIT_TYPE_SEARCH_MODES} from '../../../../utils/app.constants';
 import {MatOption} from '@angular/material/core';
@@ -39,18 +38,16 @@ import {MatSelect} from '@angular/material/select';
     MatSort,
     MatTable,
     MatHeaderCellDef,
-    DatePipe,
     MatError,
     MatFormField,
     MatInput,
     MatLabel,
     ReactiveFormsModule,
     MatFabButton,
-    MatButton,
     MatOption,
     MatSelect,
-    MatIconButton,
-    MatMiniFabButton
+    MatMiniFabButton,
+    DatePipe,
   ],
   templateUrl: './unit-type-management.component.html',
   styleUrl: './unit-type-management.component.css'
@@ -87,12 +84,15 @@ export class UnitTypeManagementComponent {
   });
 
   searchForm = new FormGroup({
-    keyword: new FormControl('', [Validators.required,Validators.minLength(3)]),
+    keyword: new FormControl('', [Validators.required, Validators.minLength(1)]),
     searchType: new FormControl(0, [Validators.required]),
   });
 
   ngOnInit() {
     this.fetchUnitTypes();
+    this.searchForm.get('searchType')?.valueChanges.subscribe((val) => {
+      this.handleSearchType(val!!);
+    })
   }
 
   fetchUnitTypes() {
@@ -113,6 +113,58 @@ export class UnitTypeManagementComponent {
       error: error => {
         this.loading = false;
         this.loadError = true;
+      }
+    });
+  }
+
+  fetchUnitTypeById(id: number) {
+    this.unitTypeService.getUnitTypeById(id).subscribe({
+      next: response => {
+        Swal.fire({
+          title: sm.UNIT_TYPE_DETAIL,
+          html: `
+        <table class="table table-bordered border-dark">
+            <tr>
+                <th>ID</th>
+                <th>${response.id}</th>
+            </tr>
+            <tr>
+                <th>NOMBRE</th>
+                <th>${response.name}</th>
+            </tr>
+            <tr>
+                <th>CREADO</th>
+                <th>${response.created_at}</th>
+            </tr>
+            <tr>
+                <th>ACTUALIZADO</th>
+                <th>${response.updated_at}</th>
+            </tr>
+        </table>
+          `
+        });
+        this.searchForm.reset();
+      },
+      error: error => {
+        Swal.fire(em.ERROR_TAG, em.UNIT_TYPE_NOT_FOUND, 'warning');
+        this.searchForm.reset();
+      }
+    });
+  }
+
+  fetchUnitTypesByName(name: string) {
+    this.unitTypeService.getUnitTypeByName(name).subscribe({
+      next: response => {
+        this.unitTypes = response;
+        this.dataSource = new MatTableDataSource<UnitType>(this.unitTypes);
+        this.hidePagination = true;
+      },
+      error: error => {
+        Swal.fire(em.ERROR_TAG, em.UNIT_TYPE_NOT_FOUND, 'warning').then((r) => {
+          if (r.isConfirmed || r.isDismissed || r.dismiss) {
+            window.location.reload();
+          }
+        })
       }
     });
   }
@@ -197,6 +249,39 @@ export class UnitTypeManagementComponent {
     this.selectedUniTName = '';
   }
 
+  handleSearchType(val: number) {
+    const keywordControl = this.searchForm.get('keyword');
+    switch (val) {
+      case 0:
+        //By ID
+        keywordControl!!.setValidators([Validators.required, Validators.minLength(1)]);
+        keywordControl!!.reset();
+        break;
+      case 1:
+        //By name
+        keywordControl!!.setValidators([Validators.required, Validators.minLength(3)]);
+        keywordControl!!.reset();
+        break;
+      default:
+        break;
+    }
+    keywordControl?.updateValueAndValidity();
+  }
+
+  handleKeywordKeydown(e: KeyboardEvent, searchType: number) {
+    if (searchType === 0) {
+      // Allow: backspace, delete, tab, escape, enter, and numbers
+      if (
+        [46, 8, 9, 27, 13].includes(e.keyCode) || // Special keys
+        (e.keyCode >= 48 && e.keyCode <= 57) || // Number keys
+        (e.keyCode >= 96 && e.keyCode <= 105) // Numpad keys
+      ) {
+        return; // Allow the input
+      }
+      e.preventDefault();
+    }
+  }
+
   getTotalPages(): number {
     return Math.ceil(this.totalItems / this.pageSize);
   }
@@ -240,12 +325,21 @@ export class UnitTypeManagementComponent {
     this.editUnitTypeForm.updateValueAndValidity();
   }
 
-  reloadPage(){
+  reloadPage() {
     window.location.reload();
   }
 
-  searchUnitT(){
-    console.log('WIP');
+  searchUnitT() {
+    switch (this.searchForm.value.searchType) {
+      case 0:
+        this.fetchUnitTypeById(parseInt(this.searchForm.value.keyword!!));
+        break;
+      case 1:
+        this.fetchUnitTypesByName(this.searchForm.value.keyword!!);
+        break;
+      default:
+        break;
+    }
   }
 
 }

@@ -11,12 +11,12 @@ import {SupplierListComponent} from './components/admin/supplier/supplier-list/s
 import {EditSupplierComponent} from './components/admin/supplier/edit-supplier/edit-supplier.component';
 import {NewSupplierComponent} from './components/admin/supplier/new-supplier/new-supplier.component';
 import {ProfileComponent} from './components/shared/profile/profile.component';
-import {UnitTypeListComponent} from './components/admin/unit-type/unit-type-list/unit-type-list.component';
-import {NewUnitTypeComponent} from './components/admin/unit-type/new-unit-type/new-unit-type.component';
-import {EditUnitTypeComponent} from './components/admin/unit-type/edit-unit-type/edit-unit-type.component';
 import {
   UnitTypeManagementComponent
 } from './components/admin/unit-type/unit-type-management/unit-type-management.component';
+import {CustomerListComponent} from './components/admin/customer/customer-list/customer-list.component';
+import {NewCustomerComponent} from './components/admin/customer/new-customer/new-customer.component';
+import {EditCustomerComponent} from './components/admin/customer/edit-customer/edit-customer.component';
 
 export const routes: Routes = [
   {path: '', component: LoginComponent, title: "FERRETERIA ATAHUALPA - INICIO DE SESIÓN", canActivate: [loginGuard]},
@@ -34,10 +34,10 @@ export const routes: Routes = [
         {path: 'supplier', component: SupplierListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE PROVEEDORES'},
         {path: 'new-supplier', component: NewSupplierComponent, title: 'FERRETERIA ATAHUALPA - NUEVO PROVEEDOR'},
         {path: 'edit-supplier/:id', component: EditSupplierComponent, title: 'FERRETERIA ATAHUALPA - GESTIONAR PROVEEDOR'},
-        {path: 'unit-type', component: UnitTypeListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE PRESENTACIONES'},
-        {path: 'new-unit-type', component: NewUnitTypeComponent, title: 'FERRETERIA ATAHUALPA - NUEVA PRESENTACIÓN'},
-        {path: 'edit-unit-type/:id', component: EditUnitTypeComponent, title: 'FERRETERIA ATAHUALPA - GESTIONAR PRESENTACIÓN'},
         {path: 'unit-type-mgmt', component: UnitTypeManagementComponent, title: 'FERRETERIA ATAHUALPA - GESTIÓN DE PRESENTACIONES'},
+        {path: 'customer', component: CustomerListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE CLIENTES'},
+        {path: 'new-customer', component: NewCustomerComponent, title: 'FERRETERIA ATAHUALPA - NUEVO CLIENTE'},
+        {path: 'edit-customer/:id', component: EditCustomerComponent, title: 'FERRETERIA ATAHUALPA - GESTIONAR CLIENTE'},
         {path: 'profile', component: ProfileComponent, title: 'FERRETERIA ATAHUALPA - MI CUENTA'},
       ]
   },

@@ -23,7 +23,14 @@
         Clientes
       </button>
       <mat-menu #customerMenu="matMenu">
-        <button mat-menu-item routerLink="/">N/A</button>
+        <button mat-menu-item routerLink="/d/new-customer">
+          <mat-icon>add_circle</mat-icon>
+          Nuevo
+        </button>
+        <button mat-menu-item routerLink="/d/customer">
+          <mat-icon>view_list</mat-icon>
+          Listado
+        </button>
       </mat-menu>
     </div>
 

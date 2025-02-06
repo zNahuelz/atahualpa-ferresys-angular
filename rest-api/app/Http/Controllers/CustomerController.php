@@ -81,6 +81,12 @@ class CustomerController extends Controller
         return response()->json($customers,200);
     }
 
+    public function getCustomersPaginated()
+    {
+        $customers = Customer::paginate(10);
+        return response()->json($customers,200);
+    }
+
     public function getCustomer($id)
     {
         $customer = Customer::find($id);

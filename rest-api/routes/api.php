@@ -67,6 +67,7 @@ Route::group([
 ], function($router){
     Route::post('/', [CustomerController::class, 'createCustomer']);
     Route::get('/', [CustomerController::class, 'getCustomers']);
+    Route::get('/p', [CustomerController::class, 'getCustomersPaginated']);
     Route::get('/{id}', [CustomerController::class, 'getCustomer']);
     Route::get('/by_dni/{dni}', [CustomerController::class, 'getCustomerByDNI']);
     Route::put('/{id}', [CustomerController::class, 'updateCustomer']);
