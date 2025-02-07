@@ -15,18 +15,18 @@ class CustomerController extends Controller
             'name' => ['required','regex:/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/'],
             'surname' => ['required','regex:/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/'],
             'dni' => ['required','regex:/^[0-9]{8,9}$/',Rule::unique('customers','dni')],
-            'address' => ['string','max:100'],
-            'phone' => ['string','regex:/^[1-9]\d{8}$/'],
-            'email' => ['email','max:50'],
+            'address' => ['nullable','max:100'],
+            'phone' => ['nullable','regex:/^[1-9]\d{8}$/'],
+            'email' => ['nullable','email','max:50'],
         ]);
 
         $customer = Customer::create([
             'name' => trim(strtoupper($request->name)),
             'surname' => trim(strtoupper($request->surname)),
             'dni' => trim($request->dni),
-            'address' => trim($request->address),
-            'phone' => trim($request->phone),
-            'email' => trim(strtoupper($request->email)),
+            'address' => !empty(trim($request->address)) ? trim($request->address) : '------',
+            'phone' => !empty(trim($request->phone)) ? trim($request->phone) : '900000000',
+            'email' => !empty(trim($request->email)) ? trim(strtoupper($request->email)) : 'EMAIL@DOMINIO.COM',
         ]);
 
         return response()->json([
@@ -47,18 +47,18 @@ class CustomerController extends Controller
             'name' => ['required','regex:/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/'],
             'surname' => ['required','regex:/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/'],
             'dni' => ['required','regex:/^[0-9]{8,9}$/',Rule::unique('customers','dni')->ignore($id)],
-            'address' => ['string','max:100'],
-            'phone' => ['string','regex:/^[1-9]\d{8}$/'],
-            'email' => ['email','max:50'],
+            'address' => ['nullable','max:100'],
+            'phone' => ['nullable','regex:/^[1-9]\d{8}$/'],
+            'email' => ['nullable','email','max:50'],
         ]);
 
         $oldCustomer->update([
             'name' => trim(strtoupper($request->name)),
             'surname' => trim(strtoupper($request->surname)),
             'dni' => trim($request->dni),
-            'address' => trim($request->address),
-            'phone' => trim($request->phone),
-            'email' => trim(strtoupper($request->email)),
+            'address' => !empty(trim($request->address)) ? trim($request->address) : '------',
+            'phone' => !empty(trim($request->phone)) ? trim($request->phone) : '900000000',
+            'email' => !empty(trim($request->email)) ? trim(strtoupper($request->email)) : 'EMAIL@DOMINIO.COM',
         ]);
 
         return response()->json([

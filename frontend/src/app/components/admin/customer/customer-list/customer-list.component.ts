@@ -141,15 +141,29 @@ export class CustomerListComponent {
       case 0:
         //By ID
         keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnly()]);
+        keywordControl?.reset();
         break;
       case 1:
         //By DNI
         keywordControl?.setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(8), integersOnly()]);
+        keywordControl?.reset();
         break;
       default:
         break;
     }
     keywordControl?.updateValueAndValidity();
+  }
+
+  handleKeywordKeydown(e: KeyboardEvent) {
+    // Allow: backspace, delete, tab, escape, enter, and numbers
+    if (
+      [46, 8, 9, 27, 13].includes(e.keyCode) || // Special keys
+      (e.keyCode >= 48 && e.keyCode <= 57) || // Number keys
+      (e.keyCode >= 96 && e.keyCode <= 105) // Numpad keys
+    ) {
+      return; // Allow the input
+    }
+    e.preventDefault();
   }
 
   showCustomerDetail(customer: Customer) {

@@ -87,7 +87,6 @@ export class EditProductComponent {
     this.productService.getProductById(id).subscribe({
       next: response => {
         this.product = response;
-        this.loading = false;
         this.editProductForm.patchValue({
           name: this.product.name,
           description: this.product.description,
@@ -98,6 +97,7 @@ export class EditProductComponent {
           unit_type_id: this.product.unit_type?.id,
           visible: this.product.visible
         });
+        this.loading = false;
       },
       error: error => {
         this.loading = true;

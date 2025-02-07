@@ -17,6 +17,7 @@ import {
 import {CustomerListComponent} from './components/admin/customer/customer-list/customer-list.component';
 import {NewCustomerComponent} from './components/admin/customer/new-customer/new-customer.component';
 import {EditCustomerComponent} from './components/admin/customer/edit-customer/edit-customer.component';
+import {RecoverAccountComponent} from './components/shared/recover-account/recover-account.component';
 
 export const routes: Routes = [
   {path: '', component: LoginComponent, title: "FERRETERIA ATAHUALPA - INICIO DE SESIÓN", canActivate: [loginGuard]},
@@ -41,5 +42,6 @@ export const routes: Routes = [
         {path: 'profile', component: ProfileComponent, title: 'FERRETERIA ATAHUALPA - MI CUENTA'},
       ]
   },
+  {path: 'recover-account', component: RecoverAccountComponent, title: 'FERRETERIA ATAHUALPA - RECUPERAR CUENTA', canActivate: [loginGuard]},
   {path: '**', redirectTo: ''}
 ];

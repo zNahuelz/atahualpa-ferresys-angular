@@ -9,6 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {AuthService} from '../../../services/auth.service';
 import {Router} from '@angular/router';
 import {NotificationService} from '../../../services/notification.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -38,7 +39,11 @@ export class LoginComponent {
         this.router.navigate(['/d']);
       },
       (err) => {
-        console.log("Error!");
+        Swal.fire('Oops! Credenciales Incorrectas','Usuario o contraseña incorrecta, intente nuevamente.','error').then((r) =>{
+          if(r.dismiss || r.isDismissed || r.isConfirmed){
+            window.location.reload();
+          }
+        });
       });
   }
 }

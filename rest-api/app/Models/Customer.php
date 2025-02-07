@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     use SoftDeletes;
+
+    protected $attributes = [
+        'address' => '------',
+        'phone' => '000000000',
+        'email' => 'EMAIL@DOMINIO.COM'
+    ];
     
     protected $fillable = [
         'name',

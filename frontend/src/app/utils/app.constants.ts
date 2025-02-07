@@ -12,6 +12,8 @@ export const ERROR_MESSAGES = {
   UNIT_TYPE_TAKEN: 'El nombre de presentación ingresado ya se encuentra en uso. Intente nuevamente.',
   UNIT_TYPE_NOT_FOUND: 'Oops! Presentación no encontrada.',
   CUSTOMER_NOT_FOUND: 'Oops! Cliente no encontrado.',
+  DNI_TAKEN: 'El DNI ingresado ya se encuentra en uso por otro cliente.',
+  CUSTOMER_UPDATE_FAILED: 'Error al actualizar el cliente. Intente nuevamente, si el error persiste comuniquese con admistración',
 }
 
 export const SUCCESS_MESSAGES = {
@@ -26,6 +28,9 @@ export const SUCCESS_MESSAGES = {
   UNIT_TYPE_DELETED: 'Presentación eliminada con correctamente.',
   UNIT_TYPE_UPDATED: 'Presentación actualizada correctamente.',
   UNIT_TYPE_DETAIL: 'Detalle de Presentación',
+  CUSTOMER_CREATED: 'Cliente creado correctamente.',
+  CUSTOMER_UPDATED: 'Cliente actualizado correctamente.',
+  CUSTOMER_DELETED: 'Cliente eliminado correctamente.',
 }
 
 export const PRODUCT_SEARCH_MODES = [

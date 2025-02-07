@@ -3,30 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ForgotPasswordMail;
+use App\Models\RecoveryToken;
 use App\Models\User;
-use App\Models\username;
-use Illuminate\Container\Attributes\Log;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
         $request->validate([
-            'username' => ['required','string','min:5','max:20'],
-            'password' => ['required','string','min:5','max:20']
+            'username' => ['required', 'string', 'min:5', 'max:20'],
+            'password' => ['required', 'string', 'min:5', 'max:20']
         ]);
 
-        $credentials = $request->only('username','password');
-        
+        $credentials = $request->only('username', 'password');
+
         $token = Auth::guard('api')->attempt($credentials);
-        if(!$token)
-        {
+        if (!$token) {
             return response()->json([
                 'message' => 'Intento de inicio de sesión fallido.'
-            ],401);
+            ], 401);
         }
 
         $user = Auth::guard('api')->user();
@@ -42,13 +44,13 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'username' => ['required','string','min:5','max:20'],
-            'password' => ['required','string','min:5','max:20'],
+            'username' => ['required', 'string', 'min:5', 'max:20'],
+            'password' => ['required', 'string', 'min:5', 'max:20'],
             'name' => ['required'],
             'paternal_surname' => ['required'],
             'maternal_surname' => ['required'],
-            'email' => ['required','email','max:50'],
-            'phone' => ['required','numeric','min:7','max:15']
+            'email' => ['required', 'email', 'max:50'],
+            'phone' => ['required', 'numeric', 'min:7', 'max:15']
         ]);
 
         $user = User::create([
@@ -71,5 +73,45 @@ class AuthController extends Controller
                 'type' => 'Bearer'
             ]
         ]);
+    }
+
+    public function profile()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['message' => 'Error! Token expirado o invalido.'], 401);
+        }
+        return response()->json($user);
+    }
+
+    public function sendRecoveryMail(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email', 'max:50']
+        ]);
+
+        $user = User::where(['email' => $request->email])->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Operación completada correctamente. Si el E-Mail ingresado pertenece a un usuario las instrucciones para recuperar tu cuenta seran enviadas.'
+            ], 200);
+        } else {
+            RecoveryToken::where(['email' => $request->email])->delete();
+            $hash = Str::random(200);
+
+            $recoveryLink = env('ANGULAR_FRONTEND_URL', 'http://localhost:3000') . '/recover-account?token=' . $hash;
+
+            RecoveryToken::create([
+                'email' => $user->email,
+                'token' => $hash,
+                'expiration' => Carbon::now()->addMinutes(10)
+            ]);
+
+            Mail::to($user->email)->send(new ForgotPasswordMail($user, $recoveryLink));
+            return response()->json([
+                'message' => 'Operación completada correctamente. Si el E-Mail ingresado pertenece a un usuario las instrucciones para recuperar tu cuenta seran enviadas.'
+            ], 200);
+        }
     }
 }
