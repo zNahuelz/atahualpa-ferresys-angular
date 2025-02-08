@@ -1,10 +1,11 @@
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {CookieService} from 'ngx-cookie-service'
-import {Observable, tap} from 'rxjs';
+import {catchError, Observable, of, tap, throwError} from 'rxjs';
 import {jwtDecode} from 'jwt-decode';
 import {Router} from '@angular/router';
 import {NotificationService} from './notification.service';
+import {HttpWrapperService} from './http-wrapper.service';
 
 @Injectable({
   providedIn: 'root'
@@ -73,5 +74,40 @@ export class AuthService {
       'username': user.username ?? 'USUARIO',
       'email': user.email ?? 'EMAIL@DOMINIO.COM',
     }
+  }
+
+  sendRecoveryEmail(email: string) {
+    return this.http.post<any>(`${this.API_URL}/recover_account`, {email}).pipe(
+      tap(response => {
+        return true;
+      }),
+      catchError(error => {
+        return of(false);
+      })
+    );
+  }
+
+  verifyRecoveryToken(token: string) {
+    return this.http.post<any>(`${this.API_URL}/verify_token`, {token}).pipe(
+      tap(response => {
+      }),
+      catchError(error => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  changePasswordWithToken(password: string, token: string) {
+    return this.http.post<any>(`${this.API_URL}/change_password`, {password, token}).pipe(
+      tap(response => {
+      }),
+      catchError(error => {
+        if (error.status === 404) {
+          return throwError(() => new Error(error.message || 'Token expirado o invalido.'));
+        } else {
+          return throwError(() => new Error('Error al cambiar la contraseña. Intente nuevamente.'));
+        }
+      })
+    );
   }
 }

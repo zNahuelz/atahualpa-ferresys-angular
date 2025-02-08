@@ -1,1 +1,135 @@
-<h1>Recover Account Wip!</h1>
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando...</h3>
+  </div>
+} @else if (showRecoveryForm) {
+  <main class="d-flex justify-content-center align-items-center bg-secondary-subtle"
+        style="height: 100vh; overflow: hidden;">
+    <div class="container-fluid px-0">
+      <div class="row justify-content-center mx-0">
+        <div class="card col-12 col-md-3 col-lg-3 border-primary px-0">
+          <div class="card-header bg-primary text-white text-center fw-bold p-2">
+            RECUPERACIÓN DE CUENTA
+          </div>
+          <div class="card-body">
+            <form class="form flex flex-center" [formGroup]="recoverAccountForm" (ngSubmit)="submitRecoveryMail()">
+              <div class="container text-center mb-3">
+                <img ngSrc="assets/images/logo_transparent.png" width="160" height="160" priority>
+              </div>
+              <hr>
+              <div class="container text-center mb-3">
+                <span class="fw-light">El siguiente formulario le permite recuperar el acceso a su cuenta en caso de haber olvidado su contraseña. Debes llenar el formulario con un E-Mail válido; posteriormente debes esperar un correo con instrucciones para recuperar el acceso a tu cuenta.</span>
+              </div>
+              <div class="row ms-3 me-3">
+                <mat-form-field class="form-field mb-2" appearance="outline">
+                  <mat-label>E-Mail</mat-label>
+                  <input type="email" matInput formControlName="email"/>
+                  @if (recoverAccountForm.get('email')?.hasError('required')) {
+                    <mat-error>Debe ingresar su E-Mail.</mat-error>
+                  }
+                  @if (recoverAccountForm.get('email')?.hasError('maxlength')) {
+                    <mat-error>Su E-Mail debe tener máximo 50 carácteres.</mat-error>
+                  }
+                  @if (recoverAccountForm.get('email')?.hasError('email')) {
+                    <mat-error>Su E-Mail debe tener el formato EMAIL&#64;DOMINIO.COM</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="row me-3 ms-3">
+                <div class="col text-center">
+                  <button mat-fab extended class="me-3" type="button" (click)="redirectToLogin()">
+                    <mat-icon>restart_alt</mat-icon>
+                    Cancelar
+                  </button>
+                  <button mat-fab extended [disabled]="recoverAccountForm.invalid" type="submit">
+                    <mat-icon>login</mat-icon>
+                    Continuar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+} @else if (showChangePasswordForm) {
+  <main class="d-flex justify-content-center align-items-center bg-secondary-subtle"
+        style="height: 100vh; overflow: hidden;">
+    <div class="container-fluid px-0">
+      <div class="row justify-content-center mx-0">
+        <div class="card col-12 col-md-3 col-lg-3 border-primary px-0">
+          <div class="card-header bg-primary text-white text-center fw-bold p-2">
+            CAMBIO DE CONTRASEÑA
+          </div>
+          <div class="card-body">
+            <form class="form flex flex-center" [formGroup]="changePasswordForm" (ngSubmit)="submitPasswordChange()">
+              <div class="container text-center mb-3">
+                <img ngSrc="assets/images/logo_transparent.png" width="160" height="160" priority>
+              </div>
+              <hr>
+              <div class="container text-center mb-3">
+                <span class="fw-light">El siguiente formulario le permite recuperar el acceso a su cuenta en caso de haber olvidado su contraseña. Debe llenar el formulario con su nueva contraseña; posteriormente podrá iniciar sesión normalmente.</span>
+              </div>
+              <div class="row ms-3 me-3">
+                <mat-form-field class="form-field mb-2" appearance="outline">
+                  <mat-label>Contraseña</mat-label>
+                  <input matInput [type]="hide() ? 'password' : 'text'" formControlName="password"/>
+                  <button
+                    mat-icon-button
+                    matSuffix
+                    (click)="clickEvent($event)"
+                    [attr.aria-pressed]="hide()"
+                    type="button"
+                  >
+                    <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                  @if (changePasswordForm.get('password')?.hasError('required')) {
+                    <mat-error>Debe ingresar su contraseña.</mat-error>
+                  }
+                  @if (changePasswordForm.get('password')?.hasError('minlength') || changePasswordForm.get('password')?.hasError('maxlength')) {
+                    <mat-error>Su contraseña debe tener entre 5 y 20 carácteres.</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="row ms-3 me-3">
+                <mat-form-field class="form-field mb-2" appearance="outline">
+                  <mat-label>Repetir Contraseña</mat-label>
+                  <input matInput [type]="hide() ? 'password' : 'text'" formControlName="repeatPassword"/>
+                  @if (changePasswordForm.get('repeatPassword')?.hasError('required')) {
+                    <mat-error>Debe repetir su contraseña.</mat-error>
+                  }
+                  @if (changePasswordForm.get('repeatPassword')?.hasError('minlength') || changePasswordForm.get('repeatPassword')?.hasError('maxlength')) {
+                    <mat-error>Su contraseña debe tener entre 5 y 20 carácteres.</mat-error>
+                  }
+                  @if (changePasswordForm.get('repeatPassword')?.hasError('mismatch') || changePasswordForm.get('password')?.hasError('mismatch')) {
+                    <mat-error>Las contraseñas no coinciden.</mat-error>
+                  }
+                </mat-form-field>
+              </div>
+
+              <div class="row me-3 ms-3">
+                <div class="col text-center">
+                  <button mat-fab extended class="me-3" type="button" (click)="redirectToLogin()">
+                    <mat-icon>restart_alt</mat-icon>
+                    Cancelar
+                  </button>
+                  <button mat-fab extended [disabled]="changePasswordForm.invalid" type="submit">
+                    <mat-icon>login</mat-icon>
+                    Continuar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+}

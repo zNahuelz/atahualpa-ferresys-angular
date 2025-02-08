@@ -42,3 +42,26 @@ export function integersOnly(): ValidatorFn {
     return null;
   };
 }
+
+export function matchControls(controlName: string, matchingControlName: string): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const control = formGroup.get(controlName);
+    const matchingControl = formGroup.get(matchingControlName);
+
+    if (!control || !matchingControl) {
+      return null;
+    }
+
+    if (matchingControl.errors && !matchingControl.errors['mismatch']) {
+      return null;
+    }
+
+    if (control.value !== matchingControl.value) {
+      matchingControl.setErrors({mismatch: true});
+    } else {
+      matchingControl.setErrors(null);
+    }
+
+    return null;
+  }
+}

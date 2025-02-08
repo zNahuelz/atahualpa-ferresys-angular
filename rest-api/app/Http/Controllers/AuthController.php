@@ -114,4 +114,63 @@ class AuthController extends Controller
             ], 200);
         }
     }
+    
+    public function verifyRecoveryToken(Request $request)
+    {
+        $request->validate(['token' => ['required','string','min:200','max:200']]);
+        
+        $databaseToken = RecoveryToken::where(['token' => $request->token])->first();
+        
+        if(!$databaseToken)
+        {
+            return response()->json(['message' => 'Error! Token expirado o invalido.'],404);
+        }
+        else {
+            $expirationDate = Carbon::parse($databaseToken->expiration);
+            $currentDate = Carbon::now();
+            if($expirationDate->lessThan($currentDate))
+            {
+                return response()->json(['message' => 'Error! Token expirado o invalido.'],404);
+            }
+            return response()->json(['message' => 'Token valido.'],200);
+        }
+    }
+    
+    public function changePasswordWithToken(Request $request)
+    {
+        $request->validate([
+           'password' => ['required','string','min:5','max:20'],
+           'token' => ['required','string','min:200','max:200']
+        ]);
+        
+        $databaseToken = RecoveryToken::where(['token' => $request->token])->first();
+        
+        if(!$databaseToken)
+        {
+            return response()->json(['message' => 'Error! Token expirado o invalido'],404);
+        }
+        else {
+            $expirationDate = Carbon::parse($databaseToken->expiration);
+            $currentDate = Carbon::now();
+            if($expirationDate->lessThan($currentDate))
+            {
+                return response()->json(['message' => 'Error! Token expirado o invalido.'],404);
+            }
+            
+            $user = User::where(['email' => $databaseToken->email])->first();
+            if(!$user){
+                return response()->json(['message' => 'Error! Usuario no encontrado.'],404);
+            }
+            
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+            
+            $databaseToken->delete();
+            return response()->json([
+                'message' => 'Contraseña actualizadas. Inicie sesión con sus nuevas credenciales.',
+                'user' => $user
+            ],200);
+        }
+    }
 }

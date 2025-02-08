@@ -14,6 +14,7 @@ export const ERROR_MESSAGES = {
   CUSTOMER_NOT_FOUND: 'Oops! Cliente no encontrado.',
   DNI_TAKEN: 'El DNI ingresado ya se encuentra en uso por otro cliente.',
   CUSTOMER_UPDATE_FAILED: 'Error al actualizar el cliente. Intente nuevamente, si el error persiste comuniquese con admistración',
+  EXPIRED_TOKEN: 'Token expirado o invalido. Intente nuevamente, si el problema persiste comuniquese con administración.',
 }
 
 export const SUCCESS_MESSAGES = {
@@ -31,6 +32,8 @@ export const SUCCESS_MESSAGES = {
   CUSTOMER_CREATED: 'Cliente creado correctamente.',
   CUSTOMER_UPDATED: 'Cliente actualizado correctamente.',
   CUSTOMER_DELETED: 'Cliente eliminado correctamente.',
+  RECOVERY_MAIL_SENDED: 'Si el E-Mail ingresado pertenece a un usuario, las instrucciones para recuperar tu cuenta serán enviadas.',
+  RECOVERY_PASSWORD_CHANGED: 'Contraseña actualizada correctamente. Usted puede iniciar sesión a continuación.',
 }
 
 export const PRODUCT_SEARCH_MODES = [

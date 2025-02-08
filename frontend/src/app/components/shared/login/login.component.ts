@@ -46,4 +46,8 @@ export class LoginComponent {
         });
       });
   }
+
+  goToRecovery(){
+    this.router.navigate(['/recover-account']);
+  }
 }

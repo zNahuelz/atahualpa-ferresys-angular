@@ -18,6 +18,8 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/recover_account', [AuthController::class, 'sendRecoveryMail']);
+    Route::post('/verify_token', [AuthController::class, 'verifyRecoveryToken']);
+    Route::post('/change_password', [AuthController::class, 'changePasswordWithToken']);
 });
 
 Route::group([
