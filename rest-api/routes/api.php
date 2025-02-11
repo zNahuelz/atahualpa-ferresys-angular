@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitTypeController;
+use App\Http\Controllers\VoucherTypeController;
 use App\Http\Middleware\GeneralMiddleware;
 use App\Http\Middleware\SellerMiddleware;
 use Illuminate\Http\Request;
@@ -76,4 +77,11 @@ Route::group([
     Route::get('/by_dni/{dni}', [CustomerController::class, 'getCustomerByDNI']);
     Route::put('/{id}', [CustomerController::class, 'updateCustomer']);
     Route::delete('/{id}', [CustomerController::class, 'deleteCustomer']);
+});
+
+Route::group([
+    'prefix' => 'voucher_type',
+    'middleware' => SellerMiddleware::class,
+], function($router){
+    Route::get('/', [VoucherTypeController::class, 'getVoucherTypes']);
 });

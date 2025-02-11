@@ -18,6 +18,7 @@ import {CustomerListComponent} from './components/admin/customer/customer-list/c
 import {NewCustomerComponent} from './components/admin/customer/new-customer/new-customer.component';
 import {EditCustomerComponent} from './components/admin/customer/edit-customer/edit-customer.component';
 import {RecoverAccountComponent} from './components/shared/recover-account/recover-account.component';
+import {SellModuleComponent} from './components/admin/sell-module/sell-module.component';
 
 export const routes: Routes = [
   {path: '', component: LoginComponent, title: "FERRETERIA ATAHUALPA - INICIO DE SESIÓN", canActivate: [loginGuard]},
@@ -39,6 +40,7 @@ export const routes: Routes = [
         {path: 'customer', component: CustomerListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE CLIENTES'},
         {path: 'new-customer', component: NewCustomerComponent, title: 'FERRETERIA ATAHUALPA - NUEVO CLIENTE'},
         {path: 'edit-customer/:id', component: EditCustomerComponent, title: 'FERRETERIA ATAHUALPA - GESTIONAR CLIENTE'},
+        {path: 'sell-products', component: SellModuleComponent, title: 'FERRETERIA ATAHUALPA - NUEVA VENTA'},
         {path: 'profile', component: ProfileComponent, title: 'FERRETERIA ATAHUALPA - MI CUENTA'},
       ]
   },

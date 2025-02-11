@@ -58,3 +58,8 @@ export const CUSTOMER_SEARCH_MODES = [
   'POR ID',
   'POR DNI',
 ]
+
+export const SM_PRODUCT_SEARCH_MODES = [
+  'POR ID',
+  'POR NOMBRE',
+]

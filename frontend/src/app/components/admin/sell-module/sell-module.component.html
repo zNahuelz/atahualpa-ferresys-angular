@@ -1,0 +1,177 @@
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando formulario...</h3>
+  </div>
+} @else {
+  <div class="row mt-3">
+
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header text-center bg-dark text-white fw-bold bg-gradient">
+          <i class="bi bi-person-fill"></i> DATOS VENTA
+        </div>
+        <div class="card-body">
+          <div class="row mt-3">
+            <div class="col">
+              <table>
+                <th class="text-start">
+                  <tr>NOMBRES: {{ customer?.name || '' }}</tr>
+                  <tr>APELLIDOS: {{ customer?.surname || '' }}</tr>
+                  <tr>DNI: {{ customer?.dni || '' }}</tr>
+                </th>
+              </table>
+            </div>
+
+            <div class="col-2 me-3">
+              <mat-form-field class="form-field" appearance="outline">
+                <mat-label>Tipo Doc.</mat-label>
+                <mat-select [formControl]="documentType">
+                  @for (vt of voucherTypes; track vt; let index = $index) {
+                    <mat-option [value]="vt.id">{{ vt.name }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+
+            <div class="col">
+              <form [formGroup]="searchCustomerForm" (ngSubmit)="searchCustomer()">
+                <mat-form-field class="form-field me-3" appearance="outline">
+                  <mat-label>DNI ó RUC</mat-label>
+                  <input type="text" matInput formControlName="dni"/>
+                </mat-form-field>
+                <button mat-flat-button class="bg-warning bg-gradient me-1" type="button"
+                        [disabled]="!searchCustomerForm.enabled" routerLink="/d/new-customer">
+                  <mat-icon>add</mat-icon>
+                  NUEVO CLI.
+                </button>
+                <button mat-flat-button class="bg-success bg-gradient me-1" type="submit"
+                        [disabled]="searchCustomerForm.invalid">
+                  <mat-icon>search</mat-icon>
+                  BUSCAR
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-7">
+      <div class="card border-primary">
+        <div class="card-header text-center bg-primary text-white fw-bold bg-gradient">
+          <i class="bi bi-box-seam"></i> PRODUCTOS DISPONIBLES
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col text-center">
+              <form [formGroup]="searchProductForm" (ngSubmit)="searchProduct()">
+                <mat-form-field class="form-field me-3" appearance="outline">
+                  <mat-label>Criterio</mat-label>
+                  <input type="text" matInput formControlName="keyword"/>
+                </mat-form-field>
+                <mat-form-field class="form-field me-3" appearance="outline">
+                  <mat-label>Tipo Busqueda</mat-label>
+                  <mat-select formControlName="searchType">
+                    @for (sm of SEARCH_MODES; track sm; let index = $index) {
+                      <mat-option [value]="index">{{ sm }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <button mat-flat-button class="bg-success bg-gradient me-1" type="submit"
+                        [disabled]="searchProductForm.invalid">
+                  <mat-icon>search</mat-icon>
+                  BUSCAR
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="row ms-2 me-2">
+            <table class="table table-sm table-bordered border-black">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th class="text-center">STOCK</th>
+                <th class="text-center">PRESENTACIÓN</th>
+                <th class="text-center">PRECIO</th>
+                <th class="text-center">#</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (p of products; track p; let index = $index) {
+                  <tr>
+                    <td>{{ p.id }}</td>
+                    <td>{{ p.name }}</td>
+                    <td class="text-center">{{ p.stock }}</td>
+                    <td class="text-center">{{ p.unit_type?.name }}</td>
+                    <td class="text-center">{{ p.sell_price }}</td>
+                    <td>
+                      <button type="button" class="btn btn-success btn-sm" (click)="addToCart(p)"><i class="bi bi-plus-square"></i></button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <div class="row">
+            <div class="col text-center">
+              <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-primary bg-gradient" (click)="prevPage()" [disabled]="isFirstPage()">
+                  <mat-icon>arrow_back</mat-icon>
+                </button>
+                <button type="button" class="btn btn-primary bg-gradient" (click)="currentPage = 1; fetchProducts()">
+                  Página {{ currentPage }} de {{ lastPage }}
+                </button>
+                <button type="button" class="btn btn-primary bg-gradient" (click)="nextPage()" [disabled]="isLastPage()">
+                  <mat-icon>arrow_forward</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-5">
+      <div class="card border-info">
+        <div class="card-header text-center bg-info bg-gradient fw-bold text-white">
+          <i class="bi bi-cart4"></i> CARRITO DE COMPRA
+        </div>
+        <div class="card-body">
+          <div class="row">
+            p1
+            p2
+            p3
+          </div>
+          <div class="row text-end mb-2">
+            <h4 class="text-success fw-bold">SUBTOTAL: {{ subtotal }}</h4>
+            <h4 class="text-black fw-bold"> IGV: {{ igv }}</h4>
+            <h4 class="text-danger fw-bold">TOTAL: {{ total }}</h4>
+          </div>
+          <div class="row">
+            <div class="col text-center">
+              <button mat-flat-button class="bg-dark  me-2" type="button"
+                      [disabled]="submitting">
+                <mat-icon>cancel</mat-icon>
+                CANCELAR
+              </button>
+
+              <button mat-flat-button class="bg-danger bg-gradient" type="button"
+                      [disabled]="!isReadyToSell()">
+                <mat-icon>add_task</mat-icon>
+                REALIZAR VENTA
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
