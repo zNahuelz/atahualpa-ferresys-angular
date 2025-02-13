@@ -44,12 +44,12 @@
                   <input type="text" matInput formControlName="dni"/>
                 </mat-form-field>
                 <button mat-flat-button class="bg-warning bg-gradient me-1" type="button"
-                        [disabled]="!searchCustomerForm.enabled" routerLink="/d/new-customer">
+                        [disabled]="!searchCustomerForm.enabled || submitting" routerLink="/d/new-customer">
                   <mat-icon>add</mat-icon>
                   NUEVO CLI.
                 </button>
                 <button mat-flat-button class="bg-success bg-gradient me-1" type="submit"
-                        [disabled]="searchCustomerForm.invalid">
+                        [disabled]="searchCustomerForm.invalid || submitting">
                   <mat-icon>search</mat-icon>
                   BUSCAR
                 </button>
@@ -72,7 +72,8 @@
               <form [formGroup]="searchProductForm" (ngSubmit)="searchProduct()">
                 <mat-form-field class="form-field me-3" appearance="outline">
                   <mat-label>Criterio</mat-label>
-                  <input type="text" matInput formControlName="keyword"/>
+                  <input type="text" matInput formControlName="keyword"
+                         (keydown)="handleKeywordKeydown($event,searchProductForm.value.searchType!!)"/>
                 </mat-form-field>
                 <mat-form-field class="form-field me-3" appearance="outline">
                   <mat-label>Tipo Busqueda</mat-label>
@@ -84,53 +85,70 @@
                 </mat-form-field>
 
                 <button mat-flat-button class="bg-success bg-gradient me-1" type="submit"
-                        [disabled]="searchProductForm.invalid">
+                        [disabled]="searchProductForm.invalid || submitting">
                   <mat-icon>search</mat-icon>
                   BUSCAR
+                </button>
+                <button mat-flat-button class="bg-primary bg-gradient me-1" type="submit"
+                        [disabled]="submitting" (click)="resetProductList()">
+                  <mat-icon>restart_alt</mat-icon>
+                  RESET
                 </button>
               </form>
             </div>
           </div>
 
-          <div class="row ms-2 me-2">
-            <table class="table table-sm table-bordered border-black">
-              <thead>
-              <tr>
-                <th>ID</th>
-                <th>NOMBRE</th>
-                <th class="text-center">STOCK</th>
-                <th class="text-center">PRESENTACIÓN</th>
-                <th class="text-center">PRECIO</th>
-                <th class="text-center">#</th>
-              </tr>
-              </thead>
-              <tbody>
-                @for (p of products; track p; let index = $index) {
-                  <tr>
-                    <td>{{ p.id }}</td>
-                    <td>{{ p.name }}</td>
-                    <td class="text-center">{{ p.stock }}</td>
-                    <td class="text-center">{{ p.unit_type?.name }}</td>
-                    <td class="text-center">{{ p.sell_price }}</td>
-                    <td>
-                      <button type="button" class="btn btn-success btn-sm" (click)="addToCart(p)"><i class="bi bi-plus-square"></i></button>
-                    </td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          </div>
+          @if (products.length >= 1) {
 
-          <div class="row">
+            <div class="row ms-2 me-2">
+              <table class="table table-sm table-bordered border-black">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>NOMBRE</th>
+                  <th class="text-center">STOCK</th>
+                  <th class="text-center">PRESENTACIÓN</th>
+                  <th class="text-center">PRECIO</th>
+                  <th class="text-center">#</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (p of products; track p; let index = $index) {
+                    <tr>
+                      <td>{{ p.id }}</td>
+                      <td>{{ p.name }}</td>
+                      <td class="text-center">{{ p.stock }}</td>
+                      <td class="text-center">{{ p.unit_type?.name }}</td>
+                      <td class="text-center">{{ p.sell_price }}</td>
+                      <td>
+                        <button type="button" class="btn btn-success btn-sm" (click)="showAddToCart(p,this.cartItems)"
+                                [disabled]="submitting"><i class="bi bi-plus-square"></i></button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <div class="row">
+              <i class="bi bi-exclamation-triangle-fill text-danger text-center" style="font-size: 100px"></i>
+              <span class="text-center fs-5 text-black">No se encontraron productos con el críterio ingresado.</span>
+            </div>
+          }
+
+          <div class="row" [hidden]="hidePagination">
             <div class="col text-center">
               <div class="btn-group btn-group-sm" role="group">
-                <button type="button" class="btn btn-primary bg-gradient" (click)="prevPage()" [disabled]="isFirstPage()">
+                <button type="button" class="btn btn-primary bg-gradient" (click)="prevPage()"
+                        [disabled]="isFirstPage() || submitting">
                   <mat-icon>arrow_back</mat-icon>
                 </button>
-                <button type="button" class="btn btn-primary bg-gradient" (click)="currentPage = 1; fetchProducts()">
+                <button type="button" class="btn btn-primary bg-gradient" (click)="currentPage = 1; fetchProducts()"
+                        [disabled]="submitting">
                   Página {{ currentPage }} de {{ lastPage }}
                 </button>
-                <button type="button" class="btn btn-primary bg-gradient" (click)="nextPage()" [disabled]="isLastPage()">
+                <button type="button" class="btn btn-primary bg-gradient" (click)="nextPage()"
+                        [disabled]="isLastPage() || submitting">
                   <mat-icon>arrow_forward</mat-icon>
                 </button>
               </div>
@@ -145,26 +163,60 @@
           <i class="bi bi-cart4"></i> CARRITO DE COMPRA
         </div>
         <div class="card-body">
-          <div class="row">
-            p1
-            p2
-            p3
-          </div>
+          @if (cartItems.length <= 0) {
+            <div class="row mb-5 mt-5">
+              <i class="bi bi-cart-x text-center text-black" style="font-size: 100px"></i>
+              <span class="text-black text-center fs-5">No hay productos en el carrito.</span>
+              @if (customer?.id == 0 || customer == undefined) {
+                <span class="text-black text-center fs-5">Debe asignar un cliente a la compra.</span>
+              }
+            </div>
+          } @else {
+            <div class="row ms-2 me-2">
+              <table class="table table-sm table-bordered border-black">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>NOMBRE</th>
+                  <th class="text-center">CANTIDAD</th>
+                  <th class="text-center">P. UNIT.</th>
+                  <th class="text-center">SUBTOTAL</th>
+                  <th class="text-center">#</th>
+                </tr>
+                </thead>
+                <tbody>
+                  @for (ct of cartItems; track ct.product?.id; let index = $index) {
+                    <tr>
+                      <td>{{ ct.product?.id }}</td>
+                      <td>{{ ct.product?.name }}</td>
+                      <td class="text-center">{{ ct.amount }}</td>
+                      <td class="text-center">{{ ct.product?.sell_price }}</td>
+                      <td class="text-center">{{ ct.subtotal }}</td>
+                      <td>
+                        <button class="btn btn-sm btn-danger" (click)="removeFromCart(ct)" [disabled]="submitting"><i
+                          class="bi bi-trash3"></i></button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
           <div class="row text-end mb-2">
-            <h4 class="text-success fw-bold">SUBTOTAL: {{ subtotal }}</h4>
+            <h4 class="text-success fw-bold">SUBTOTAL: {{ getSubtotal() }}</h4>
             <h4 class="text-black fw-bold"> IGV: {{ igv }}</h4>
-            <h4 class="text-danger fw-bold">TOTAL: {{ total }}</h4>
+            <h4 class="text-danger fw-bold">TOTAL: {{ getTotal() }}</h4>
           </div>
           <div class="row">
             <div class="col text-center">
               <button mat-flat-button class="bg-dark  me-2" type="button"
-                      [disabled]="submitting">
+                      [disabled]="submitting" (click)="reloadPage()">
                 <mat-icon>cancel</mat-icon>
                 CANCELAR
               </button>
 
               <button mat-flat-button class="bg-danger bg-gradient" type="button"
-                      [disabled]="!isReadyToSell()">
+                      [disabled]="!isReadyToSell() || submitting" (click)="saveSale()">
                 <mat-icon>add_task</mat-icon>
                 REALIZAR VENTA
               </button>

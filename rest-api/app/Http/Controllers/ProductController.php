@@ -90,9 +90,23 @@ class ProductController extends Controller
         return response()->json($products);
     }
 
+    public function getProductsInStock()
+    {
+        $products = Product::with(['supplier','unitType'])->where('stock','>',0)->paginate(10);
+        return response()->json($products);
+    }
+
     public function getProductsByName($name)
     {
         $products = Product::with(['supplier','unitType'])->where('name','LIKE','%'.$name.'%')->get();
+        return response()->json($products);
+    }
+
+    public function getProductsByNameInStock($name)
+    {
+        $products = Product::with(['supplier','unitType'])
+        ->where('name','LIKE','%'.$name.'%')
+        ->where('stock','>',0)->get();
         return response()->json($products);
     }
 
@@ -120,7 +134,23 @@ class ProductController extends Controller
 
     public function getProduct($id)
     {
-        $product = Product::with(['supplier','unitType'])->find($id); //TODO Check!
+        $product = Product::with(['supplier','unitType'])->find($id); 
+        if(!$product)
+        {
+            return response()->json([
+                'message' => 'Producto de ID: '.$id.' no encontrado.'
+            ],404);
+        }
+        
+        return response()->json($product);
+    }
+
+    public function getProductInStock($id)
+    {
+        $product = Product::with(['supplier','unitType'])
+        ->where('id',$id)
+        ->where('stock','>',0)
+        ->first(); 
         if(!$product)
         {
             return response()->json([

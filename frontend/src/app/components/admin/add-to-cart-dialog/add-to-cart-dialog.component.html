@@ -1,9 +1,38 @@
-<div class="container text-center">
-  <h4 mat-dialog-title>{{product.name}}</h4>
-  <form>
-    <input type="text">
+<h4 mat-dialog-title class="text-center">{{data.product.name}}</h4>
+<mat-dialog-content>
+  <table class="table">
+    <tr class="fs-5">
+      <td>STOCK</td>
+      <td>{{availableStock}}</td>
+    </tr>
+    <tr class="fs-5">
+      <td>PRESENTACIÓN</td>
+      <td>{{data.product.unit_type?.name}}</td>
+    </tr>
+  </table>
+
+  <form [formGroup]="addToCartForm" class="text-center">
+    <mat-form-field class="form-field mb-2" appearance="outline">
+      <mat-label>Stock</mat-label>
+      <input matInput type="number" placeholder="1" formControlName="amount" [min]="1" [step]="1" [max]="availableStock"
+             (keydown)="allowIntegers($event)"/>
+      @if (addToCartForm.get('amount')?.hasError('required')) {
+        <mat-error>Debe ingresar la cantidad a comprar.</mat-error>
+      }
+      @if (addToCartForm.get('amount')?.hasError('pattern')) {
+        <mat-error>El número ingresado no cumple con el formato requerido.</mat-error>
+      }
+      @if (addToCartForm.get('amount')?.hasError('greaterThanZero')) {
+        <mat-error>La cantidad a comprar debe ser igual o superior a 1.</mat-error>
+      }
+      @if (addToCartForm.get('amount')?.hasError('max')) {
+        <mat-error>La cantidad a comprar no puede superar el stock.</mat-error>
+      }
+    </mat-form-field>
   </form>
-</div>
+
+</mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="closeDialog()">Cerrar</button>
+  <button mat-button (click)="addToCart()" [disabled]="addToCartForm.invalid">AÑADIR</button>
+  <button mat-button (click)="closeDialog()">CERRAR</button>
 </mat-dialog-actions>

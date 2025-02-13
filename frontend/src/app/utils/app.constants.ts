@@ -34,6 +34,7 @@ export const SUCCESS_MESSAGES = {
   CUSTOMER_DELETED: 'Cliente eliminado correctamente.',
   RECOVERY_MAIL_SENDED: 'Si el E-Mail ingresado pertenece a un usuario, las instrucciones para recuperar tu cuenta serán enviadas.',
   RECOVERY_PASSWORD_CHANGED: 'Contraseña actualizada correctamente. Usted puede iniciar sesión a continuación.',
+  SALE_COMPLETED: 'Venta completada correctamente.',
 }
 
 export const PRODUCT_SEARCH_MODES = [

@@ -1,5 +1,5 @@
 export function allowIntegers(e: KeyboardEvent) {
-  if (e.key === '.' || e.key === '-' || e.key === 'e' || e.key === ',') {
+  if (e.key === '.' || e.key === '-' || e.key === 'e' || e.key === ',' || e.key === '+') {
     e.preventDefault();
   }
 }

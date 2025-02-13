@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitTypeController;
+use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\VoucherTypeController;
 use App\Http\Middleware\GeneralMiddleware;
 use App\Http\Middleware\SellerMiddleware;
@@ -33,6 +34,9 @@ Route::group([
     Route::get('/{id}', [ProductController::class,'getProduct']);
     Route::get('/', [ProductController::class, 'getProducts']);
     Route::get('/paginate', [ProductController::class,'getProductsPaginated']);
+    Route::get('/s/p', [ProductController::class, 'getProductsInStock']);
+    Route::get('/s/by_name/{name}', [ProductController::class, 'getProductsByNameInStock']);
+    Route::get('/s/{id}', [ProductController::class, 'getProductInStock']);
     Route::get('/by_name/{name}', [ProductController::class, 'getProductsByName']);
     Route::get('/by_desc/{description}',[ProductController::class, 'getProductsByDescription']);
     Route::get('/by_unit_type/{id}', [ProductController::class, 'getProductsByUnitType']);
@@ -77,6 +81,13 @@ Route::group([
     Route::get('/by_dni/{dni}', [CustomerController::class, 'getCustomerByDNI']);
     Route::put('/{id}', [CustomerController::class, 'updateCustomer']);
     Route::delete('/{id}', [CustomerController::class, 'deleteCustomer']);
+});
+
+Route::group([
+    'prefix' => 'voucher',
+    'middleware' => SellerMiddleware::class,
+], function($router){
+    Route::post('/', [VoucherController::class, 'createVoucher']);
 });
 
 Route::group([

@@ -19,8 +19,16 @@ export class ProductService {
     return this.httpWrapper.GET<PaginatedResponse<Product>>(`${this.endpoint}?page=${page}`);
   }
 
+  getProductsPaginatedInStock(page: number): Observable<PaginatedResponse<Product>> {
+    return this.httpWrapper.GET<PaginatedResponse<Product>>(`${this.endpoint}/s/p?page=${page}`);
+  }
+
   getProductsByName(name: string): Observable<Product[]> {
     return this.httpWrapper.GET<Product[]>(`${this.endpoint}/by_name/${name}`);
+  }
+
+  getProductsByNameInStock(name: string): Observable<Product[]> {
+    return this.httpWrapper.GET<Product[]>(`${this.endpoint}/s/by_name/${name}`);
   }
 
   getProductsByUnitType(unitTypeId: number): Observable<Product[]> {
@@ -33,6 +41,10 @@ export class ProductService {
 
   getProductById(id: number): Observable<Product> {
     return this.httpWrapper.GET<Product>(`${this.endpoint}/${id}`);
+  }
+
+  getProductByIdInStock(id: number): Observable<Product> {
+    return this.httpWrapper.GET<Product>(`${this.endpoint}/s/${id}`);
   }
 
   createProduct(product: Product): Observable<any> {
