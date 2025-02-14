@@ -88,6 +88,9 @@ Route::group([
     'middleware' => SellerMiddleware::class,
 ], function($router){
     Route::post('/', [VoucherController::class, 'createVoucher']);
+    Route::get('/by_month', [VoucherController::class, 'getVouchersByMonth']);
+    Route::get('/by_dni/{dni}', [VoucherController::class, 'getVouchersByCustomerDni']);
+    Route::get('/by_range', [VoucherController::class, 'getVouchersByRange']);
 });
 
 Route::group([

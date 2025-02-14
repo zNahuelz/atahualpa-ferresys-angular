@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\VoucherDetail;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class VoucherController extends Controller
 {
     public function createVoucher(Request $request)
     {
+        //TODO: Review.
         $request->validate([
             'voucherType' => ['required','integer','exists:voucher_types,id'],
             'customerId' => ['required','integer','min:1','exists:customers,id'],
@@ -57,5 +61,60 @@ class VoucherController extends Controller
             }
         }
         return response()->json($voucher);
+    }
+
+
+    public function getVouchersByMonth(Request $request)
+    {
+        $dateString = $request->query('date');
+        if($dateString)
+        {
+            try
+            {
+                $date = Carbon::createFromFormat('Y-m-d',$dateString);
+            }
+            catch(Exception $ex)
+            {
+                $date->now();
+            }
+            $firstDay = $date->copy()->startOfMonth();
+            $lastDay = $date->copy()->endOfMonth();
+            $vouchers = Voucher::with(['voucherType','customer'])->whereBetween('created_at',[$firstDay,$lastDay])->paginate(50);
+            return response()->json($vouchers);
+        }
+        else
+        {
+            return response()->json(['message' => 'Debe proporcionar una fecha valida para completar la solicitud.'],400);
+        }
+    }
+
+    public function getVouchersByRange(Request $request)
+    {
+        $startDateString = $request->query('startDate');
+        $endDateString = $request->query('endDate');
+        if($startDateString && $endDateString)
+        {
+            try
+            {
+                $startDate = Carbon::createFromFormat('Y-m-d',$startDateString)->startOfDay();
+                $endDate = Carbon::createFromFormat('Y-m-d',$endDateString)->endOfDay();
+            }
+            catch(Exception $ex)
+            {
+                return response()->json(['message' => 'El rango proporcionado no tiene el formato correcto.'],400);
+            }
+            $vouchers = Voucher::with(['voucherType','customer'])->whereBetween('created_at',[$startDate,$endDate])->paginate(50);
+            return response()->json($vouchers);
+        }
+    }
+
+    public function getVouchersByCustomerDni($dni)
+    {
+        $customer = Customer::where('dni',$dni);
+        if(!$customer)
+        {
+            return response()->json(['message' => 'Cliente de DNI: '.$dni.' no encontrado.'],404);
+        }
+        Voucher::with(['voucherType','customer'])->where('customer_id',$customer->id)->paginate(50);
     }
 }

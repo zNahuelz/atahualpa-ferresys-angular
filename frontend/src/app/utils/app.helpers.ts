@@ -26,3 +26,7 @@ export function integersOnly(e: KeyboardEvent) {
   }
   e.preventDefault();
 }
+
+export function formatDateToY_m_d(date: Date): string {
+  return date.toISOString().split('T')[0];
+}

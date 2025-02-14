@@ -15,6 +15,7 @@ export const ERROR_MESSAGES = {
   DNI_TAKEN: 'El DNI ingresado ya se encuentra en uso por otro cliente.',
   CUSTOMER_UPDATE_FAILED: 'Error al actualizar el cliente. Intente nuevamente, si el error persiste comuniquese con admistración',
   EXPIRED_TOKEN: 'Token expirado o invalido. Intente nuevamente, si el problema persiste comuniquese con administración.',
+  VOUCHERS_ERROR_BY_DATE: 'No se encontraron comprobantes de pago en el mes actual. Intente nuevamente.',
 }
 
 export const SUCCESS_MESSAGES = {
