@@ -19,6 +19,10 @@ export class VoucherService {
     return this.httpWrapper.POST<any>(this.endpoint, voucherData);
   }
 
+  getVoucherById(id: number): Observable<Voucher> {
+    return this.httpWrapper.GET<Voucher>(`${this.endpoint}/by_id/${id}`);
+  }
+
   getVouchersByMonth(page: number, date?: string): Observable<PaginatedResponse<Voucher>> {
     return this.httpWrapper.GET<PaginatedResponse<Voucher>>(`${this.endpoint}/by_month?date=${date}&page=${page}`);
   }
@@ -29,6 +33,10 @@ export class VoucherService {
 
   getVouchersByRange(page: number, startDate: string, endDate: string): Observable<PaginatedResponse<Voucher>> {
     return this.httpWrapper.GET<PaginatedResponse<Voucher>>(`${this.endpoint}/by_range?startDate=${startDate}&endDate=${endDate}&page=${page}`);
+  }
+
+  downloadVoucherById(id: number): Observable<Blob> {
+    return this.httpWrapper.GET_BLOB(`${this.endpoint}/download/${id}`);
   }
 
 }

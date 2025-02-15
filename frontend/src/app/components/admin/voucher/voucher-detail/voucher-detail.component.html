@@ -1,1 +1,144 @@
-<h1>Voucher Detail WIP</h1>
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando comprobante de venta...</h3>
+  </div>
+} @else {
+  <div class="row mt-5">
+    <div class="col-2"></div>
+    <div class="col">
+      <div class="card border border-primary mb-5">
+        <div class="card-header text-center bg-primary bg-gradient fw-bold text-white fs-5">
+          <i class="bi bi-receipt"></i> Detalle de Comprobante de Pago
+        </div>
+        <div class="card-body">
+          <div class="row ms-3 me-3 mb-2">
+            <div class="col-6 text-start fw-bold text-primary-emphasis fs-5">
+              <span>Fecha: {{ voucher.created_at | date }}</span>
+            </div>
+            <div class="col text-end">
+              <button class="btn btn-warning" type="button" (click)="downloadVoucher()"><i class="bi bi-download"></i>
+              </button>
+            </div>
+          </div>
+          <div class="row ms-3 me-3">
+            <span class="fs-4 text-dark mb-2">Datos del Cliente</span>
+            <hr>
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label text-black">Nombres</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.customer?.name">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label text-black">Apellidos</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.customer?.surname">
+              </div>
+            </div>
+          </div>
+          <div class="row ms-3 me-3">
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label text-black">DNI</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.customer?.dni">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-3">
+                <label class="form-label text-black">E-Mail</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.customer?.email">
+              </div>
+            </div>
+          </div>
+          <div class="row ms-3 me-3">
+            <span class="fs-4 text-dark mb-2">Datos del Comprobante</span>
+            <hr>
+            <div class="col-4">
+              <div class="mb-3">
+                <label class="form-label text-black">ID</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.id">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="mb-3">
+                <label class="form-label text-black">Tipo</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.voucher_type?.name">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="mb-3">
+                <label class="form-label text-black">Estado</label>
+                @if (voucher.paid) {
+                  <input type="text" class="form-control text-success fw-bold" [disabled]="true"
+                         value="PAGADO">
+                } @else {
+                  <input type="text" class="form-control text-danger fw-bold text-danger" [disabled]="true"
+                         value="PENDIENTE">
+                }
+              </div>
+            </div>
+          </div>
+          <div class="row ms-3 me-3">
+            <div class="col-4">
+              <div class="mb-3">
+                <label class="form-label text-black">Subtotal</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.subtotal">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="mb-3">
+                <label class="form-label text-black">IGV</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.igv">
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="mb-3">
+                <label class="form-label text-black">Total</label>
+                <input type="text" class="form-control text-dark fw-bold" [disabled]="true"
+                       [value]="voucher.total">
+              </div>
+            </div>
+          </div>
+          <div class="row ms-3 me-3">
+            <span class="fs-4 text-dark mb-2">Productos</span>
+            <hr>
+            <table class="table table-sm table-bordered table-striped border-dark">
+              <thead>
+              <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">NOMBRE</th>
+                <th class="text-center">CANTIDAD</th>
+                <th class="text-center">PRECIO UNITARIO</th>
+                <th class="text-center">SUBTOTAL</th>
+              </tr>
+              </thead>
+              <tbody>
+                @for (vd of voucher.voucher_detail; track vd.id) {
+                  <tr>
+                    <th>{{ vd.product?.id }}</th>
+                    <th>{{ vd.product?.name }}</th>
+                    <th class="text-end">{{ vd.amount }}</th>
+                    <th class="text-end">{{ vd.unit_price }}</th>
+                    <th class="text-end">{{ vd.subtotal }}</th>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-2"></div>
+  </div>
+}

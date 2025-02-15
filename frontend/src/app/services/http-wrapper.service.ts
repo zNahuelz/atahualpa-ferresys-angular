@@ -28,6 +28,15 @@ export class HttpWrapperService {
       .pipe(catchError(this.handleError));
   }
 
+  GET_BLOB(url: string): Observable<Blob> {
+    return this.http
+      .get(`${this.API_URL}${url}`, {
+        headers: this.getAuthHeaders(),
+        responseType: 'blob',
+      })
+      .pipe(catchError(this.handleError));
+  }
+
   POST<T>(url: string, body: any): Observable<T> {
     return this.http
       .post<T>(`${this.API_URL}${url}`, body, {headers: this.getAuthHeaders()})

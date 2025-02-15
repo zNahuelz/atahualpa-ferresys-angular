@@ -25,7 +25,7 @@ import {SUCCESS_MESSAGES as sm, ERROR_MESSAGES as em} from '../../../utils/app.c
 
 
 @Component({
-  selector: 'app-sell-module',
+  selector: 'app-sale-module',
   imports: [
     MatFormField,
     MatInput,
@@ -38,10 +38,10 @@ import {SUCCESS_MESSAGES as sm, ERROR_MESSAGES as em} from '../../../utils/app.c
     MatOption,
     RouterLink
   ],
-  templateUrl: './sell-module.component.html',
-  styleUrl: './sell-module.component.css'
+  templateUrl: './sale-module.component.html',
+  styleUrl: './sale-module.component.css'
 })
-export class SellModuleComponent {
+export class SaleModuleComponent {
   //TODO: TEST AND REFACTOR.
   private productService = inject(ProductService);
   private customerService = inject(CustomerService);

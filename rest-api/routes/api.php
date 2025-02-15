@@ -7,6 +7,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitTypeController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\VoucherTypeController;
+use App\Http\Middleware\BlobResponseMiddleware;
 use App\Http\Middleware\GeneralMiddleware;
 use App\Http\Middleware\SellerMiddleware;
 use Illuminate\Http\Request;
@@ -88,9 +89,11 @@ Route::group([
     'middleware' => SellerMiddleware::class,
 ], function($router){
     Route::post('/', [VoucherController::class, 'createVoucher']);
+    Route::get('/by_id/{id}', [VoucherController::class, 'getVoucherById']);
     Route::get('/by_month', [VoucherController::class, 'getVouchersByMonth']);
     Route::get('/by_dni/{dni}', [VoucherController::class, 'getVouchersByCustomerDni']);
     Route::get('/by_range', [VoucherController::class, 'getVouchersByRange']);
+    Route::get('/download/{id}', [VoucherController::class, 'getVoucherPdf'])->middleware(BlobResponseMiddleware::class);
 });
 
 Route::group([
@@ -99,3 +102,5 @@ Route::group([
 ], function($router){
     Route::get('/', [VoucherTypeController::class, 'getVoucherTypes']);
 });
+
+Route::get('/test/pdf/{id}', [VoucherController::class, 'getVoucherPdf']);

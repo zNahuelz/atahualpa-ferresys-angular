@@ -16,6 +16,7 @@ export const ERROR_MESSAGES = {
   CUSTOMER_UPDATE_FAILED: 'Error al actualizar el cliente. Intente nuevamente, si el error persiste comuniquese con admistración',
   EXPIRED_TOKEN: 'Token expirado o invalido. Intente nuevamente, si el problema persiste comuniquese con administración.',
   VOUCHERS_ERROR_BY_DATE: 'No se encontraron comprobantes de pago en el mes actual. Intente nuevamente.',
+  VOUCHER_DOWNLOAD_FAILED: 'Error al descargar el comprobante de pago. Intente nuevamente, si el problema persiste comuniquese con administración',
 }
 
 export const SUCCESS_MESSAGES = {

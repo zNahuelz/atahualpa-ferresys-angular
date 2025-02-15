@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\VoucherDetail;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -116,5 +117,30 @@ class VoucherController extends Controller
             return response()->json(['message' => 'Cliente de DNI: '.$dni.' no encontrado.'],404);
         }
         Voucher::with(['voucherType','customer'])->where('customer_id',$customer->id)->paginate(50);
+    }
+
+    public function getVoucherByID($id)
+    {
+        $voucher = Voucher::where('id',$id)->with(['voucherType','voucherDetail.product','customer'])->first();
+        if(!$voucher)
+        {
+            return response()->json(['message' => 'Comprobante de pago de ID: '.$id.' no encontrado.'],404);
+        }
+        return response()->json($voucher);
+    }
+
+    public function getVoucherPdf($id)
+    {
+        $voucher = Voucher::where('id',$id)->with(['voucherType','voucherDetail.product','customer'])->first();
+        if(!$voucher)
+        {
+            return response()->json(['message' => 'Comprobante de pago de ID: '.$id.' no encontrado.'],404);
+        }
+        //TODO: Fix. Image not showing.
+        //$logoPath = public_path('images/logo_transparent.png');
+        //$image = "data:image/png;base64," . base64_encode(file_get_contents($logoPath));
+        $pdf = Pdf::loadView('pdfs.voucher', ['data' => $voucher]);
+
+        return $pdf->download('invoice.pdf');
     }
 }
