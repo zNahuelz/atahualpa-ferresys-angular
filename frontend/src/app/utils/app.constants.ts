@@ -16,7 +16,10 @@ export const ERROR_MESSAGES = {
   CUSTOMER_UPDATE_FAILED: 'Error al actualizar el cliente. Intente nuevamente, si el error persiste comuniquese con admistración',
   EXPIRED_TOKEN: 'Token expirado o invalido. Intente nuevamente, si el problema persiste comuniquese con administración.',
   VOUCHERS_ERROR_BY_DATE: 'No se encontraron comprobantes de pago en el mes actual. Intente nuevamente.',
+  VOUCHERS_ERROR_BY_RANGE: 'No se encontraron comprobantes de pago en el rango ingresado. Intente nuevamente.',
   VOUCHER_DOWNLOAD_FAILED: 'Error al descargar el comprobante de pago. Intente nuevamente, si el problema persiste comuniquese con administración',
+  VOUCHER_NOT_FOUND: 'El comprobante solicitado no existe o no esta disponible. Intente nuevamente, si el error persiste comuniquese con administración.',
+  VOUCHER_NOT_FOUND_DNI: 'El DNI ingresado no tiene comprobantes registrados o no existe. Intente nuevamente, si el error persiste comuniquese con administración',
 }
 
 export const SUCCESS_MESSAGES = {
@@ -65,4 +68,14 @@ export const CUSTOMER_SEARCH_MODES = [
 export const SM_PRODUCT_SEARCH_MODES = [
   'POR ID',
   'POR NOMBRE',
+]
+
+export const VOUCHER_SEARCH_MODES = [
+  'POR ID',
+  'POR DNI/RUC',
+]
+
+export const VOUCHER_FILTER_TYPES = [
+  'POR MES-AÑO',
+  'POR RANGO'
 ]

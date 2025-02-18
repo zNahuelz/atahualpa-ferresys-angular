@@ -108,8 +108,8 @@
 							<tr>
 								<td class="title">
 									<img
-										src="N/A"
-										style="width: 100%; max-width: 300px"
+										src="{{ $image }}"
+										style="width: 100px; height: 100px;"
 									/>
 								</td>
 

@@ -247,13 +247,13 @@ export class SaleModuleComponent {
         this.products = response.data;
         this.totalItems = response.total;
         this.lastPage = response.last_page;
-        this.loading = false;
         this.hidePagination = false;
+        this.loading = false;
       }),
       error: (error) => {
         this.hidePagination = true;
-        this.loading = false;
         this.loadError = true;
+        this.loading = false;
       }
     });
   }

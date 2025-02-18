@@ -28,7 +28,7 @@ export class VoucherService {
   }
 
   getVouchersByCustomerDni(page: number, dni: string): Observable<PaginatedResponse<Voucher>> {
-    return this.httpWrapper.GET<PaginatedResponse<Voucher>>(`${this.endpoint}/by_dni/${dni}&page=${page}`);
+    return this.httpWrapper.GET<PaginatedResponse<Voucher>>(`${this.endpoint}/by_dni/${dni}?page=${page}`);
   }
 
   getVouchersByRange(page: number, startDate: string, endDate: string): Observable<PaginatedResponse<Voucher>> {

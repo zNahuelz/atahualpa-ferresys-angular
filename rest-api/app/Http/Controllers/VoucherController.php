@@ -80,7 +80,7 @@ class VoucherController extends Controller
             }
             $firstDay = $date->copy()->startOfMonth();
             $lastDay = $date->copy()->endOfMonth();
-            $vouchers = Voucher::with(['voucherType','customer'])->whereBetween('created_at',[$firstDay,$lastDay])->paginate(50);
+            $vouchers = Voucher::with(['voucherType','customer'])->whereBetween('created_at',[$firstDay,$lastDay])->paginate(10);
             return response()->json($vouchers);
         }
         else
@@ -104,19 +104,20 @@ class VoucherController extends Controller
             {
                 return response()->json(['message' => 'El rango proporcionado no tiene el formato correcto.'],400);
             }
-            $vouchers = Voucher::with(['voucherType','customer'])->whereBetween('created_at',[$startDate,$endDate])->paginate(50);
+            $vouchers = Voucher::with(['voucherType','customer'])->whereBetween('created_at',[$startDate,$endDate])->paginate(10);
             return response()->json($vouchers);
         }
     }
 
     public function getVouchersByCustomerDni($dni)
     {
-        $customer = Customer::where('dni',$dni);
+        $customer = Customer::where('dni',$dni)->first();
         if(!$customer)
         {
             return response()->json(['message' => 'Cliente de DNI: '.$dni.' no encontrado.'],404);
         }
-        Voucher::with(['voucherType','customer'])->where('customer_id',$customer->id)->paginate(50);
+        $vouchers = Voucher::with(['voucherType','customer'])->where('customer_id',$customer->id)->paginate(10);
+        return response()->json($vouchers,200);
     }
 
     public function getVoucherByID($id)
@@ -136,11 +137,11 @@ class VoucherController extends Controller
         {
             return response()->json(['message' => 'Comprobante de pago de ID: '.$id.' no encontrado.'],404);
         }
-        //TODO: Fix. Image not showing.
-        //$logoPath = public_path('images/logo_transparent.png');
-        //$image = "data:image/png;base64," . base64_encode(file_get_contents($logoPath));
-        $pdf = Pdf::loadView('pdfs.voucher', ['data' => $voucher]);
-
+ 
+        $logoPath = public_path('images/logo_transparent.png');
+        $image = "data:image/png;base64," . base64_encode(file_get_contents($logoPath));
+        $pdf = Pdf::loadView('pdfs.voucher', ['data' => $voucher,'image' => $image]);
+        $pdf->setOption('isRemoteEnabled', true);
         return $pdf->download('invoice.pdf');
     }
 }
