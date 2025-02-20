@@ -16,7 +16,7 @@ import {UnitType} from '../../../../models/unit-type.model';
 import {Supplier} from '../../../../models/supplier.model';
 import {UnitTypeService} from '../../../../services/unit-type.service';
 import {SupplierService} from '../../../../services/supplier.service';
-import {integersOnly} from '../../../../validators/custom-validators'
+import {integersOnlyValidator} from '../../../../validators/custom-validators'
 import {MatDialog} from '@angular/material/dialog';
 import {ProductDetailDialogComponent} from '../product-detail-dialog/product-detail-dialog.component';
 import Swal from 'sweetalert2';
@@ -74,7 +74,7 @@ export class ProductListComponent {
   ]
 
   searchForm = new FormGroup({
-    keyword: new FormControl('', [Validators.required, Validators.minLength(1), integersOnly()]),
+    keyword: new FormControl('', [Validators.required, Validators.minLength(1), integersOnlyValidator()]),
     searchType: new FormControl(0, [Validators.required]),
     selectedSupplier: new FormControl(null, []),
     selectedUnitType: new FormControl(null, []),
@@ -145,7 +145,7 @@ export class ProductListComponent {
         this.keywordHidden = false;
         this.unitTypesHidden = true;
         this.suppliersHidden = true;
-        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnlyValidator()]);
         suppliersControl?.clearValidators();
         unitTypeControl?.clearValidators();
         keywordControl?.reset();

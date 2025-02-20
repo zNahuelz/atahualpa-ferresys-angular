@@ -33,7 +33,7 @@ export function greaterThanZeroWithDecimalsValidator(): ValidatorFn {
   };
 }
 
-export function integersOnly(): ValidatorFn {
+export function integersOnlyValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const value = control.value;
     if (value && !/^\d+$/.test(value)) {
@@ -43,7 +43,7 @@ export function integersOnly(): ValidatorFn {
   };
 }
 
-export function matchControls(controlName: string, matchingControlName: string): ValidatorFn {
+export function matchControlsValidator(controlName: string, matchingControlName: string): ValidatorFn {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const control = formGroup.get(controlName);
     const matchingControl = formGroup.get(matchingControlName);

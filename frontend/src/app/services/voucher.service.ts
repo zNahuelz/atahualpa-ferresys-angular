@@ -1,7 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpWrapperService} from './http-wrapper.service';
 import {Observable} from 'rxjs';
-import {VoucherType} from '../models/voucher-type.model';
 import {PaginatedResponse} from '../models/paginated-response.entity';
 import {Voucher} from '../models/voucher.model';
 

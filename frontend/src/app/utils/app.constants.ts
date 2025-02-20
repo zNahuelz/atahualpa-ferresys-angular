@@ -20,6 +20,10 @@ export const ERROR_MESSAGES = {
   VOUCHER_DOWNLOAD_FAILED: 'Error al descargar el comprobante de pago. Intente nuevamente, si el problema persiste comuniquese con administración',
   VOUCHER_NOT_FOUND: 'El comprobante solicitado no existe o no esta disponible. Intente nuevamente, si el error persiste comuniquese con administración.',
   VOUCHER_NOT_FOUND_DNI: 'El DNI ingresado no tiene comprobantes registrados o no existe. Intente nuevamente, si el error persiste comuniquese con administración',
+  EMAIL_TAKEN: 'El E-Mail ingresado ya pertenece a otro usuario del sistema. Intente nuevamente.',
+  USERNAME_TAKEN: 'El nombre de usuario ingresado ya pertenece a otro usuario del sistema. Intente nuevamente.',
+  ACCOUNT_DELETED: 'La cuenta de usuario que intenta modificar no existe o ha sido eliminada. Comuniquese con administración.',
+  INCORRECT_CREDENTIALS: 'La contraseña ingresada no coincide con los registros del sistema. Vuelva a intentarlo, si el problema persiste comuniquese con administración.'
 }
 
 export const SUCCESS_MESSAGES = {
@@ -39,6 +43,7 @@ export const SUCCESS_MESSAGES = {
   CUSTOMER_DELETED: 'Cliente eliminado correctamente.',
   RECOVERY_MAIL_SENDED: 'Si el E-Mail ingresado pertenece a un usuario, las instrucciones para recuperar tu cuenta serán enviadas.',
   RECOVERY_PASSWORD_CHANGED: 'Contraseña actualizada correctamente. Usted puede iniciar sesión a continuación.',
+  UPDATED_USER_DATA: 'Datos de la cuenta actualizados correctamente. Usted debe iniciar sesión con sus nuevas credenciales.',
   SALE_COMPLETED: 'Venta completada correctamente.',
 }
 

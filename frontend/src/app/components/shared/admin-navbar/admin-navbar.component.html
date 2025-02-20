@@ -13,7 +13,10 @@
         Comprobantes
       </button>
       <mat-menu #voucherMenu="matMenu">
-        <button mat-menu-item routerLink="/d/voucher"><mat-icon>view_list</mat-icon>Listado</button>
+        <button mat-menu-item routerLink="/d/voucher">
+          <mat-icon>view_list</mat-icon>
+          Listado
+        </button>
       </mat-menu>
     </div>
 
@@ -68,6 +71,23 @@
       </mat-menu>
     </div>
 
+    <div class="nav">
+      <button mat-button [matMenuTriggerFor]="accountsMenu" class="text-dark">
+        <mat-icon>manage_accounts</mat-icon>
+        Cuentas
+      </button>
+      <mat-menu #accountsMenu="matMenu">
+        <button mat-menu-item routerLink="/d/new-account">
+          <mat-icon>add_circle</mat-icon>
+          Nueva
+        </button>
+        <button mat-menu-item routerLink="/d/account">
+          <mat-icon>view_list</mat-icon>
+          Listado
+        </button>
+      </mat-menu>
+    </div>
+
     <div class="nav me-auto">
       <button mat-button [matMenuTriggerFor]="toolsMenu" class="text-dark">
         <mat-icon>tune</mat-icon>
@@ -84,7 +104,7 @@
     <div>
       <button mat-button [matMenuTriggerFor]="userMenu" class="text-dark">
         <mat-icon class="text-dark">account_circle</mat-icon>
-        <span class="text-dark">{{ authService.getUserData().username }}</span>
+        <span class="text-dark text-uppercase">{{ authService.getUserData().username }}</span>
         <mat-icon class="text-dark">arrow_drop_down</mat-icon>
       </button>
       <mat-menu #userMenu="matMenu">

@@ -7,6 +7,8 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitTypeController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\VoucherTypeController;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\AdminOrSellerMiddleware;
 use App\Http\Middleware\BlobResponseMiddleware;
 use App\Http\Middleware\GeneralMiddleware;
 use App\Http\Middleware\SellerMiddleware;
@@ -17,12 +19,16 @@ Route::group([
     'prefix' => '/auth',
     'middleware' => GeneralMiddleware::class,
 ], function($router){
+    Route::get('/', [AuthController::class, 'getUsers'])->middleware(AdminMiddleware::class);
+    Route::delete('/{id}', [AuthController::class, 'deleteUser'])->middleware(AdminMiddleware::class);
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/register', [AuthController::class, 'createAccount'])->middleware(AdminMiddleware::class);
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/recover_account', [AuthController::class, 'sendRecoveryMail']);
     Route::post('/verify_token', [AuthController::class, 'verifyRecoveryToken']);
     Route::post('/change_password', [AuthController::class, 'changePasswordWithToken']);
+    Route::put('/profile', [AuthController::class, 'updateAccountData'])->middleware(AdminOrSellerMiddleware::class);
+    Route::post('/reset/{id}', [AuthController::class, 'resetAccountPassword'])->middleware(AdminMiddleware::class);
 });
 
 Route::group([

@@ -27,7 +27,7 @@ import {
   VOUCHER_SEARCH_MODES as SEARCH_MODES,
   VOUCHER_FILTER_TYPES as FILTER_MODES
 } from '../../../../utils/app.constants';
-import {integersOnly} from '../../../../validators/custom-validators';
+import {integersOnlyValidator} from '../../../../validators/custom-validators';
 import {
   MatDatepickerModule,
   MatDatepickerToggle,
@@ -95,7 +95,7 @@ export class VoucherListComponent {
   protected readonly FILTER_MODES = FILTER_MODES;
 
   searchForm = new FormGroup({
-    keyword: new FormControl('', [Validators.required, integersOnly()]),
+    keyword: new FormControl('', [Validators.required, integersOnlyValidator()]),
     searchType: new FormControl(0, [Validators.required]),
   });
 
@@ -234,12 +234,12 @@ export class VoucherListComponent {
     switch (val) {
       case 0:
         //By ID
-        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnlyValidator()]);
         keywordControl?.reset();
         break;
       case 1:
         //By DNI-RUC
-        keywordControl?.setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(11), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(11), integersOnlyValidator()]);
         keywordControl?.reset();
         break;
       default:

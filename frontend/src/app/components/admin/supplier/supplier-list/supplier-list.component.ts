@@ -25,7 +25,7 @@ import {
   SUCCESS_MESSAGES as sm,
   SUPPLIER_SEARCH_MODES as SEARCH_MODE
 } from '../../../../utils/app.constants';
-import {integersOnly} from '../../../../validators/custom-validators';
+import {integersOnlyValidator} from '../../../../validators/custom-validators';
 import {SupplierDetailDialogComponent} from '../supplier-detail-dialog/supplier-detail-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -79,7 +79,7 @@ export class SupplierListComponent {
   protected readonly SEARCH_MODES = SEARCH_MODE;
 
   searchForm = new FormGroup({
-    keyword: new FormControl('', [Validators.required, Validators.minLength(1), integersOnly()]),
+    keyword: new FormControl('', [Validators.required, Validators.minLength(1), integersOnlyValidator()]),
     searchType: new FormControl(0, [Validators.required]),
   });
 
@@ -219,13 +219,13 @@ export class SupplierListComponent {
     const keywordControl = this.searchForm.get('keyword');
     switch (val) {
       case 0: //By Id
-        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnlyValidator()]);
         break;
       case 1: //By Name
         keywordControl?.setValidators([Validators.required, Validators.minLength(3), Validators.maxLength(150)]);
         break;
       case 2: //By RUC
-        keywordControl?.setValidators([Validators.required, Validators.minLength(11), Validators.maxLength(11), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(11), Validators.maxLength(11), integersOnlyValidator()]);
         break;
       default:
         break;

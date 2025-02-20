@@ -21,6 +21,8 @@ import {RecoverAccountComponent} from './components/shared/recover-account/recov
 import {SaleModuleComponent} from './components/admin/sale-module/sale-module.component';
 import {VoucherListComponent} from './components/admin/voucher/voucher-list/voucher-list.component';
 import {VoucherDetailComponent} from './components/admin/voucher/voucher-detail/voucher-detail.component';
+import {AccountListComponent} from './components/admin/account/account-list/account-list.component';
+import {NewAccountComponent} from './components/admin/account/new-account/new-account.component';
 
 export const routes: Routes = [
   {path: '', component: LoginComponent, title: "FERRETERIA ATAHUALPA - INICIO DE SESIÓN", canActivate: [loginGuard]},
@@ -45,6 +47,8 @@ export const routes: Routes = [
         {path: 'sell-products', component: SaleModuleComponent, title: 'FERRETERIA ATAHUALPA - NUEVA VENTA'},
         {path: 'voucher', component: VoucherListComponent, title: 'FERRETERIA ATAHUALPA - COMPROBANTES DE PAGO'},
         {path: 'voucher/:id', component: VoucherDetailComponent, title: 'FERRETERIA ATAHUALPA - DETALLE DE COMPROBANTE'},
+        {path: 'account', component: AccountListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE CUENTAS DE USUARIO'},
+        {path: 'new-account', component: NewAccountComponent, title: 'FERRETERIA ATAHUALPA - NUEVO USUARIO'},
         {path: 'profile', component: ProfileComponent, title: 'FERRETERIA ATAHUALPA - MI CUENTA'},
       ]
   },

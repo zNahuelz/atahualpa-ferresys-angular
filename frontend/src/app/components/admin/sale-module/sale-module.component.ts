@@ -19,7 +19,7 @@ import Swal from 'sweetalert2';
 import {Router, RouterLink} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {AddToCartDialogComponent} from '../add-to-cart-dialog/add-to-cart-dialog.component';
-import {integersOnly} from '../../../validators/custom-validators';
+import {integersOnlyValidator} from '../../../validators/custom-validators';
 import {VoucherService} from '../../../services/voucher.service';
 import {SUCCESS_MESSAGES as sm, ERROR_MESSAGES as em} from '../../../utils/app.constants';
 
@@ -70,11 +70,11 @@ export class SaleModuleComponent {
   hidePagination = false;
 
   searchCustomerForm = new FormGroup({
-    dni: new FormControl('', [Validators.minLength(1), Validators.maxLength(11), Validators.required, integersOnly()]),
+    dni: new FormControl('', [Validators.minLength(1), Validators.maxLength(11), Validators.required, integersOnlyValidator()]),
   });
 
   searchProductForm = new FormGroup({
-    keyword: new FormControl('', [Validators.minLength(1), integersOnly(), Validators.required]),
+    keyword: new FormControl('', [Validators.minLength(1), integersOnlyValidator(), Validators.required]),
     searchType: new FormControl(0, [Validators.required]),
   });
 
@@ -107,7 +107,7 @@ export class SaleModuleComponent {
     switch (val) {
       case 0:
         //By ID
-        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnlyValidator()]);
         keywordControl?.reset();
         break;
       case 1:

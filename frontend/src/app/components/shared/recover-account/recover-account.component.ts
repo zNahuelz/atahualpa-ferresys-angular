@@ -3,7 +3,7 @@ import {AuthService} from '../../../services/auth.service';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {ActivatedRoute} from '@angular/router';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {matchControls} from '../../../validators/custom-validators';
+import {matchControlsValidator} from '../../../validators/custom-validators';
 import {MatError, MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -45,7 +45,7 @@ export class RecoverAccountComponent {
   changePasswordForm = new FormGroup({
     password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]),
     repeatPassword: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]),
-  }, {validators: matchControls('password', 'repeatPassword')})
+  }, {validators: matchControlsValidator('password', 'repeatPassword')})
 
   ngOnInit(): void {
     this.loading = true;

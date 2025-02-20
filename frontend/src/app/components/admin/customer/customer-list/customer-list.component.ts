@@ -11,7 +11,7 @@ import {
 } from '@angular/material/table';
 import {CUSTOMER_SEARCH_MODES} from '../../../../utils/app.constants';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {integersOnly} from '../../../../validators/custom-validators';
+import {integersOnlyValidator} from '../../../../validators/custom-validators';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatButton} from '@angular/material/button';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
@@ -72,7 +72,7 @@ export class CustomerListComponent {
   ]
 
   searchForm = new FormGroup({
-    keyword: new FormControl('', [Validators.required, Validators.minLength(1), integersOnly()]),
+    keyword: new FormControl('', [Validators.required, Validators.minLength(1), integersOnlyValidator()]),
     searchType: new FormControl(0, [Validators.required]),
   });
 
@@ -140,12 +140,12 @@ export class CustomerListComponent {
     switch (val) {
       case 0:
         //By ID
-        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(1), integersOnlyValidator()]);
         keywordControl?.reset();
         break;
       case 1:
         //By DNI
-        keywordControl?.setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(8), integersOnly()]);
+        keywordControl?.setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(8), integersOnlyValidator()]);
         keywordControl?.reset();
         break;
       default:

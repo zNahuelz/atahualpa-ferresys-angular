@@ -1,1 +1,160 @@
-<h1>PROFILE WIP</h1>
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando perfil...</h3>
+  </div>
+} @else {
+  <div class="row mt-3 pb-3">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <div class="card border border-primary">
+        <div class="card-header text-center text-white fw-bold bg-primary bg-gradient ">
+          <i class="bi bi-person-lines-fill"></i> Mi Perfil
+        </div>
+        <div class="card-body">
+          <span class="fs-5 text-dark fw-light">Datos de la Cuenta</span>
+          <hr>
+          <form class="ms-2 me-2" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col">
+                <div class="mb-2">
+                  <label class="form-label text-dark">ID</label>
+                  <input type="text" class="form-control fw-bold text-dark" [value]="userData.id" [disabled]="true">
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-2">
+                  <label class="form-label text-dark">Nombres</label>
+                  <input type="text" class="form-control fw-bold text-dark" [value]="userData.name" [disabled]="true">
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <div class="mb-2">
+                  <label class="form-label text-dark">Apellido Paterno</label>
+                  <input type="text" class="form-control fw-bold text-dark" [value]="userData.paternal_surname"
+                         [disabled]="true">
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-2">
+                  <label class="form-label text-dark">Apellido Materno</label>
+                  <input type="text" class="form-control fw-bold text-dark" [value]="userData.maternal_surname"
+                         [disabled]="true">
+                </div>
+              </div>
+            </div>
+
+            <span class="fs-5 text-dark fw-light">Actualizar datos</span>
+            <hr>
+            <div class="row ms-3 me-3 mb-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Usuario</mat-label>
+                <input matInput formControlName="username">
+                @if (profileForm.get('username')?.hasError('required')) {
+                  <mat-error>Debe ingresar un nombre de usuario.</mat-error>
+                }
+                @if (profileForm.get('username')?.hasError('minlength') || profileForm.get('username')?.hasError('maxlength')) {
+                  <mat-error>El nombre de usuario debe tener entre 5 y 20 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3 mb-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Contraseña actual</mat-label>
+                <input matInput formControlName="oldPassword" type="password">
+                @if (profileForm.get('oldPassword')?.hasError('required')) {
+                  <mat-error>Debe ingresar su contraseña actual.</mat-error>
+                }
+                @if (profileForm.get('oldPassword')?.hasError('minlength') || profileForm.get('oldPassword')?.hasError('maxlength')) {
+                  <mat-error>La contraseña debe tener entre 5 y 20 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3 mb-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Nueva contraseña</mat-label>
+                <input matInput formControlName="newPassword" type="password">
+                @if (profileForm.get('newPassword')?.hasError('required')) {
+                  <mat-error>Debe ingresar su nueva contraseña.</mat-error>
+                }
+                @if (profileForm.get('newPassword')?.hasError('minlength') || profileForm.get('newPassword')?.hasError('maxlength')) {
+                  <mat-error>La nueva contraseña debe tener entre 5 y 20 carácteres.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3 mb-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Repetir contraseña</mat-label>
+                <input matInput formControlName="newPasswordConfirm" type="password">
+                @if (profileForm.get('newPasswordConfirm')?.hasError('required')) {
+                  <mat-error>Debe repetir su nueva contraseña.</mat-error>
+                }
+                @if (profileForm.get('newPasswordConfirm')?.hasError('minlength') || profileForm.get('newPasswordConfirm')?.hasError('maxlength')) {
+                  <mat-error>La nueva contraseña debe tener entre 5 y 20 carácteres.</mat-error>
+                }
+                @if (profileForm.get('newPasswordConfirm')?.hasError('mismatch')) {
+                  <mat-error>Las contraseñas no coinciden.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3 mb-2">
+              <mat-form-field appearance="outline">
+                <mat-label>E-Mail</mat-label>
+                <input matInput formControlName="email" type="email">
+                @if (profileForm.get('email')?.hasError('required')) {
+                  <mat-error>Debe ingresar su e-mail.</mat-error>
+                }
+                @if (profileForm.get('email')?.hasError('email')) {
+                  <mat-error>El e-mail debe cumplir con el formato: EMAIL&#64;DOMINIO.COM</mat-error>
+                }
+                @if (profileForm.get('email')?.hasError('maxlength')) {
+                  <mat-error>El e-mail debe tener 50 carácteres como máximo.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row ms-3 me-3 mb-2">
+              <mat-form-field appearance="outline">
+                <mat-label>Teléfono</mat-label>
+                <input matInput formControlName="phone" type="text">
+                @if (profileForm.get('phone')?.hasError('required')) {
+                  <mat-error>Debe ingresar su número de teléfono.</mat-error>
+                }
+                @if (profileForm.get('phone')?.hasError('minlength') || profileForm.get('phone')?.hasError('maxlength')) {
+                  <mat-error>El número de teléfono debe tener entre 6 y 15 carácteres.</mat-error>
+                }
+                @if (profileForm.get('phone')?.hasError('pattern')) {
+                  <mat-error>El número telefónico solo puede contener números y +</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row text-center">
+              <div class="col">
+                <button class="btn btn-danger bg-gradient fw-bold me-2" type="button" routerLink="/d/"><i
+                  class="bi bi-x-octagon"></i> Cancelar
+                </button>
+                <button class="btn btn-secondary bg-gradient fw-bold me-2" type="button" (click)="reloadPage()"><i
+                  class="bi bi-arrow-clockwise"></i> Limpiar
+                </button>
+                <button class="btn btn-success bg-gradient fw-bold" type="submit" [disabled]="profileForm.invalid"><i
+                  class="bi bi-floppy-fill"></i> Actualizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-3"></div>
+  </div>
+}

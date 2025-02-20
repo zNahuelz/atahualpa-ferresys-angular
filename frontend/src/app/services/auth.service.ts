@@ -6,6 +6,7 @@ import {jwtDecode} from 'jwt-decode';
 import {Router} from '@angular/router';
 import {NotificationService} from './notification.service';
 import {HttpWrapperService} from './http-wrapper.service';
+import {User} from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -109,5 +110,17 @@ export class AuthService {
         }
       })
     );
+  }
+
+  updateAccountData(formData: {}): Observable<any> {
+    return this.http.put<any>(`${this.API_URL}/profile`, formData, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
+  }
+
+  retrieveUserData(): Observable<User> {
+    return this.http.get<User>(`${this.API_URL}/profile`, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
   }
 }
