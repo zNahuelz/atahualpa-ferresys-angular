@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UnitTypeController;
 use App\Http\Controllers\VoucherController;
@@ -19,7 +20,7 @@ Route::group([
     'prefix' => '/auth',
     'middleware' => GeneralMiddleware::class,
 ], function($router){
-    Route::get('/', [AuthController::class, 'getUsers'])->middleware(AdminMiddleware::class);
+    Route::get('/', [AuthController::class, 'getUsers'])->middleware(AdminOrSellerMiddleware::class);
     Route::delete('/{id}', [AuthController::class, 'deleteUser'])->middleware(AdminMiddleware::class);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'createAccount'])->middleware(AdminMiddleware::class);
@@ -109,4 +110,9 @@ Route::group([
     Route::get('/', [VoucherTypeController::class, 'getVoucherTypes']);
 });
 
-Route::get('/test/pdf/{id}', [VoucherController::class, 'getVoucherPdf']);
+Route::group([
+    'prefix' => 'role',
+    'middleware' => AdminOrSellerMiddleware::class,
+], function($router){
+    Route::get('/', [RoleController::class, 'getRoles']);
+});

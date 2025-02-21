@@ -23,7 +23,8 @@ export const ERROR_MESSAGES = {
   EMAIL_TAKEN: 'El E-Mail ingresado ya pertenece a otro usuario del sistema. Intente nuevamente.',
   USERNAME_TAKEN: 'El nombre de usuario ingresado ya pertenece a otro usuario del sistema. Intente nuevamente.',
   ACCOUNT_DELETED: 'La cuenta de usuario que intenta modificar no existe o ha sido eliminada. Comuniquese con administración.',
-  INCORRECT_CREDENTIALS: 'La contraseña ingresada no coincide con los registros del sistema. Vuelva a intentarlo, si el problema persiste comuniquese con administración.'
+  INCORRECT_CREDENTIALS: 'La contraseña ingresada no coincide con los registros del sistema. Vuelva a intentarlo, si el problema persiste comuniquese con administración.',
+  ROLE_NOT_FOUND: 'El rol seleccionado no esta disponible o no existe. Intente nuevamente.',
 }
 
 export const SUCCESS_MESSAGES = {
@@ -45,6 +46,7 @@ export const SUCCESS_MESSAGES = {
   RECOVERY_PASSWORD_CHANGED: 'Contraseña actualizada correctamente. Usted puede iniciar sesión a continuación.',
   UPDATED_USER_DATA: 'Datos de la cuenta actualizados correctamente. Usted debe iniciar sesión con sus nuevas credenciales.',
   SALE_COMPLETED: 'Venta completada correctamente.',
+  ACCOUNT_CREATED: 'Cuenta de Usuario creada correctamente. Se han enviado las credenciales de acceso al e-mail proporcionado.',
 }
 
 export const PRODUCT_SEARCH_MODES = [

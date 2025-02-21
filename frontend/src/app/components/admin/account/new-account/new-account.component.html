@@ -1,1 +1,149 @@
-<h1>New account WIP!</h1>
+@if (loading) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <h3 class="fw-light">Cargando formulario...</h3>
+  </div>
+} @else if (loadError) {
+  <div class="container d-flex align-items-center justify-content-center mt-5 pt-5">
+    <div class="row text-center">
+      <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size: 120px"></i>
+      <span class="fs-4 text-dark fw-lighter">Ups! Error en la carga del formulario. El sistema debe tener roles almacenados para realizar el registro de cuentas. Intente nuevamente.</span>
+    </div>
+  </div>
+} @else {
+  <div class="row mt-3">
+    <div class="col-3"></div>
+    <div class="col">
+      <div class="card border-primary border">
+        <div class="card-header bg-primary bg-gradient text-center fw-bold text-white">
+          <i class="bi bi-person-plus-fill"></i> Nueva Cuenta de Usuario
+        </div>
+        <div class="card-body ms-3 me-3">
+          <p class="text-center text-dark">La cuenta de usuario contará con los permisos de acceso configurados según el rol seleccionado. El nombre de usuario de la misma será generado automáticamente por el sistema basado en los nombres del personal y su número de teléfono. La contraseña generada para la cuenta será enviada al correo proporcionado.</p>
+          <hr>
+          <form [formGroup]="createAccountForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input type="text" matInput formControlName="name"/>
+                @if (createAccountForm.get('name')?.hasError('required')) {
+                  <mat-error>Debe ingresar un nombre.</mat-error>
+                }
+                @if (createAccountForm.get('name')?.hasError('minlength') || createAccountForm.get('name')?.hasError('maxlength')) {
+                  <mat-error>El nombre debe tener entre 3 y 30 carácteres.</mat-error>
+                }
+                @if (createAccountForm.get('name')?.hasError('pattern')) {
+                  <mat-error>El nombre debe tener el formato correcto.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Apellido Paterno</mat-label>
+                <input type="text" matInput formControlName="paternal_surname"/>
+                @if (createAccountForm.get('paternal_surname')?.hasError('required')) {
+                  <mat-error>Debe ingresar un apellido paterno.</mat-error>
+                }
+                @if (createAccountForm.get('paternal_surname')?.hasError('minlength') || createAccountForm.get('paternal_surname')?.hasError('maxlength')) {
+                  <mat-error>El apellido paterno debe tener entre 3 y 30 carácteres.</mat-error>
+                }
+                @if (createAccountForm.get('paternal_surname')?.hasError('pattern')) {
+                  <mat-error>El apellido paterno debe tener el formato correcto.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Apellido Materno</mat-label>
+                <input type="text" matInput formControlName="maternal_surname"/>
+                @if (createAccountForm.get('maternal_surname')?.hasError('required')) {
+                  <mat-error>Debe ingresar un apellido materno.</mat-error>
+                }
+                @if (createAccountForm.get('maternal_surname')?.hasError('minlength') || createAccountForm.get('maternal_surname')?.hasError('maxlength')) {
+                  <mat-error>El apellido materno debe tener entre 3 y 30 carácteres.</mat-error>
+                }
+                @if (createAccountForm.get('maternal_surname')?.hasError('pattern')) {
+                  <mat-error>El apellido materno debe tener el formato correcto.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>E-Mail</mat-label>
+                <input type="email" matInput formControlName="email"/>
+                @if (createAccountForm.get('email')?.hasError('required')) {
+                  <mat-error>Debe ingresar un e-mail.</mat-error>
+                }
+                @if (createAccountForm.get('email')?.hasError('maxlength')) {
+                  <mat-error>El e-mail debe tener máximo 50 carácteres.</mat-error>
+                }
+                @if (createAccountForm.get('email')?.hasError('email')) {
+                  <mat-error>El e-mail debe tener el formato EMAIL&#64;DOMINIO.COM</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Teléfono</mat-label>
+                <input type="text" matInput formControlName="phone"/>
+                @if (createAccountForm.get('phone')?.hasError('required')) {
+                  <mat-error>Debe ingresar un número de teléfono.</mat-error>
+                }
+                @if (createAccountForm.get('phone')?.hasError('minlength') || createAccountForm.get('phone')?.hasError('maxlength')) {
+                  <mat-error>El número de teléfono debe tener entre 6 y 15 carácteres.</mat-error>
+                }
+                @if (createAccountForm.get('phone')?.hasError('pattern')) {
+                  <mat-error>El número de teléfono debe contener solo números.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field class="form-field mb-2" appearance="outline">
+                <mat-label>Rol</mat-label>
+                <mat-select formControlName="role">
+                  @for (r of roles; track r.id) {
+                    <mat-option [value]="r.id">{{ r.name }}</mat-option>
+                  }
+                </mat-select>
+                @if (createAccountForm.get('role')?.hasError('notZero') || createAccountForm.get('role')?.hasError('required')) {
+                  <mat-error>Debe seleccionar un rol.</mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="row text-center">
+              <div class="col">
+                <button class="btn btn-danger bg-gradient fw-bold me-2" type="button" routerLink="/d/"
+                        [disabled]="submitting"><i
+                  class="bi bi-x-octagon"></i> Cancelar
+                </button>
+                <button class="btn btn-secondary bg-gradient fw-bold me-2" type="button" (click)="reloadPage()"
+                        [disabled]="submitting"><i
+                  class="bi bi-arrow-clockwise"></i> Limpiar
+                </button>
+                <button class="btn btn-success bg-gradient fw-bold" type="submit"
+                        [disabled]="createAccountForm.invalid || submitting">@if (!submitting) {
+                  <i
+                    class="bi bi-floppy-fill"></i> Nuevo
+                }
+                  @else{
+                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span> Guardando...</span>
+                  }
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-3"></div>
+  </div>
+}

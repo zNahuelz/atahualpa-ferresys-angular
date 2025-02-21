@@ -123,4 +123,17 @@ export class AuthService {
       headers: {authorization: `Bearer ${this.getToken()}`}
     });
   }
+
+  createAccount(formData: {}): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/register`, formData, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.API_URL}`, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
+  }
+
 }

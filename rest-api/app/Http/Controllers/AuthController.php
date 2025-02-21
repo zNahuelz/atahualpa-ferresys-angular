@@ -203,7 +203,7 @@ class AuthController extends Controller
 
     public function getUsers()
     {
-        $users = User::all();
+        $users = User::with('role')->get();
         return response()->json($users,200);
     }
 

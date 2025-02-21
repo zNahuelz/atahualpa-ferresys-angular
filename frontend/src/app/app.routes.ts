@@ -23,7 +23,7 @@ import {VoucherListComponent} from './components/admin/voucher/voucher-list/vouc
 import {VoucherDetailComponent} from './components/admin/voucher/voucher-detail/voucher-detail.component';
 import {AccountListComponent} from './components/admin/account/account-list/account-list.component';
 import {NewAccountComponent} from './components/admin/account/new-account/new-account.component';
-
+//TODO: Dividir areas por permisos.
 export const routes: Routes = [
   {path: '', component: LoginComponent, title: "FERRETERIA ATAHUALPA - INICIO DE SESIÓN", canActivate: [loginGuard]},
   {
