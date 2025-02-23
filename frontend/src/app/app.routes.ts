@@ -23,22 +23,26 @@ import {VoucherListComponent} from './components/admin/voucher/voucher-list/vouc
 import {VoucherDetailComponent} from './components/admin/voucher/voucher-detail/voucher-detail.component';
 import {AccountListComponent} from './components/admin/account/account-list/account-list.component';
 import {NewAccountComponent} from './components/admin/account/new-account/new-account.component';
-//TODO: Dividir areas por permisos.
+import {ManagementLayoutComponent} from './layouts/management-layout/management-layout.component';
+import {generalGuard} from './guards/general.guard';
+import {UnauthorizedComponent} from './components/shared/unauthorized/unauthorized.component';
+
 export const routes: Routes = [
   {path: '', component: LoginComponent, title: "FERRETERIA ATAHUALPA - INICIO DE SESIÓN", canActivate: [loginGuard]},
   {
     path: 'd',
-    component: AdminLayoutComponent,
+    component: ManagementLayoutComponent,
     title: "FERRETERIA ATAHUALPA - ???",
-    canActivate: [adminGuard],
+    canActivate: [generalGuard],
+    data: {roles: ['ADMINISTRADOR','VENDEDOR']},
     children:
       [
-        {path: '', component: DashboardComponent, title: "FERRETERIA ATAHUALPA - DASHBOARD"},
+        {path: '', component: DashboardComponent, title: 'FERRETERIA ATAHUALPA - DASHBOARD'},
         {path: 'product', component: ProductListComponent, title: "FERRETERIA ATAHUALPA - LISTADO DE PRODUCTOS"},
-        {path: 'new-product', component: NewProductComponent, title: 'FERRETERIA ATAHUALPA - NUEVO PRODUCTO'},
+        {path: 'new-product', component: NewProductComponent, title: 'FERRETERIA ATAHUALPA - NUEVO PRODUCTO',data:{roles: ['ADMINISTRADOR']}},
         {path: 'edit-product/:id', component: EditProductComponent, title: 'FERRETERIA ATAHUALPA - GESTIONAR PRODUCTO'},
         {path: 'supplier', component: SupplierListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE PROVEEDORES'},
-        {path: 'new-supplier', component: NewSupplierComponent, title: 'FERRETERIA ATAHUALPA - NUEVO PROVEEDOR'},
+        {path: 'new-supplier', component: NewSupplierComponent, title: 'FERRETERIA ATAHUALPA - NUEVO PROVEEDOR',data:{roles: ['ADMINISTRADOR']}},
         {path: 'edit-supplier/:id', component: EditSupplierComponent, title: 'FERRETERIA ATAHUALPA - GESTIONAR PROVEEDOR'},
         {path: 'unit-type-mgmt', component: UnitTypeManagementComponent, title: 'FERRETERIA ATAHUALPA - GESTIÓN DE PRESENTACIONES'},
         {path: 'customer', component: CustomerListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE CLIENTES'},
@@ -47,9 +51,10 @@ export const routes: Routes = [
         {path: 'sell-products', component: SaleModuleComponent, title: 'FERRETERIA ATAHUALPA - NUEVA VENTA'},
         {path: 'voucher', component: VoucherListComponent, title: 'FERRETERIA ATAHUALPA - COMPROBANTES DE PAGO'},
         {path: 'voucher/:id', component: VoucherDetailComponent, title: 'FERRETERIA ATAHUALPA - DETALLE DE COMPROBANTE'},
-        {path: 'account', component: AccountListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE CUENTAS DE USUARIO'},
-        {path: 'new-account', component: NewAccountComponent, title: 'FERRETERIA ATAHUALPA - NUEVO USUARIO'},
+        {path: 'account', component: AccountListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE CUENTAS DE USUARIO',data:{roles: ['ADMINISTRADOR']}},
+        {path: 'new-account', component: NewAccountComponent, title: 'FERRETERIA ATAHUALPA - NUEVO USUARIO',data:{roles: ['ADMINISTRADOR']}},
         {path: 'profile', component: ProfileComponent, title: 'FERRETERIA ATAHUALPA - MI CUENTA'},
+        {path: '401', component: UnauthorizedComponent, title: 'FERRETERIA ATAHUALPA - ACCESO RESTRINGIDO'},
       ]
   },
   {path: 'recover-account', component: RecoverAccountComponent, title: 'FERRETERIA ATAHUALPA - RECUPERAR CUENTA', canActivate: [loginGuard]},

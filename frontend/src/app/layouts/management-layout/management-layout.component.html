@@ -1,0 +1,13 @@
+@if (authService.getUserData().role === 'ADMINISTRADOR') {
+  <app-admin-navbar></app-admin-navbar>
+} @else if (authService.getUserData().role === 'VENDEDOR') {
+  <app-seller-navbar></app-seller-navbar>
+} @else {
+  <div class="container bg-danger text-center fw-bold">
+    ERROR: Usuario sin permisos de acceso.
+  </div>
+}
+<div class="container">
+  <app-notification></app-notification>
+  <router-outlet></router-outlet>
+</div>

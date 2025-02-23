@@ -10,8 +10,11 @@
     <div class="col-3"></div>
     <div class="col-6">
       <div class="card border border-primary">
-        <div class="card-header text-center text-white fw-bold bg-primary bg-gradient ">
-          <i class="bi bi-person-lines-fill"></i> Mi Perfil
+        <div class="card-header text-white fw-bold bg-primary bg-gradient ">
+          <div class="row">
+            <div class="col"><i class="bi bi-person-lines-fill"></i> Mi Perfil</div>
+            <div class="col text-end">ROL: {{authService.getUserData().role}}</div>
+          </div>
         </div>
         <div class="card-body">
           <span class="fs-5 text-dark fw-light">Datos de la Cuenta</span>

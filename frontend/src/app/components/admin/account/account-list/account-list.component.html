@@ -60,9 +60,9 @@
         <td mat-cell *matCellDef="let u">
           <ng-container>
             <div class="btn-group btn-group-sm" role="group">
-              <button type="button" class="btn btn-success bg-gradient btn-sm"><i class="bi bi-arrow-repeat"></i>
+              <button type="button" class="btn btn-success bg-gradient btn-sm" (click)="resetAccount(u)"><i class="bi bi-arrow-repeat"></i>
               </button>
-              <button type="button" class="btn btn-danger bg-gradient btn-sm"><i
+              <button type="button" class="btn btn-danger bg-gradient btn-sm" (click)="deleteAccount(u)"><i
                 class="bi bi-trash-fill"></i></button>
             </div>
           </ng-container>

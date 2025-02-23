@@ -10,10 +10,9 @@ import {
   MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef, MatTable,
   MatTableDataSource
 } from '@angular/material/table';
-import {Product} from '../../../../models/product.model';
-import {MatIcon} from '@angular/material/icon';
 import {MatSort} from '@angular/material/sort';
-import {RouterLink} from '@angular/router';
+import Swal from 'sweetalert2';
+import {SUCCESS_MESSAGES as sm, ERROR_MESSAGES as em} from '../../../../utils/app.constants';
 
 @Component({
   selector: 'app-account-list',
@@ -25,12 +24,10 @@ import {RouterLink} from '@angular/router';
     MatHeaderCell,
     MatHeaderRow,
     MatHeaderRowDef,
-    MatIcon,
     MatRow,
     MatRowDef,
     MatSort,
     MatTable,
-    RouterLink,
     MatHeaderCellDef
   ],
   templateUrl: './account-list.component.html',
@@ -40,7 +37,6 @@ export class AccountListComponent {
   private authService = inject(AuthService);
   loading = false;
   loadError = false;
-  //TODO: Eliminar y resetear cuentas.
   users: User[] = [];
   dataSource = new MatTableDataSource<User>();
   displayedColumns = [
@@ -70,4 +66,78 @@ export class AccountListComponent {
       }
     });
   }
+
+  deleteAccount(user: User) {
+    Swal.fire({
+      title: 'Eliminación de Cuenta',
+      html: `¿Está seguro de eliminar la siguiente cuenta de usuario? <br> NOMBRE DE USUARIO: ${user.username} <br> E-MAIL: ${user.email}`,
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Eliminar',
+      confirmButtonColor: '#54BE3D',
+      cancelButtonColor: '#D3211F',
+    }).then((r) => {
+      if(r.isConfirmed) {
+        this.loading = true;
+        this.authService.deleteAccount(user.id!!).subscribe({
+          next: response => {
+            this.loading = false;
+            Swal.fire(sm.SUCCESS_TAG,sm.ACCOUNT_DELETED,'success').then((r) =>{
+              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+                window.location.reload();
+              }
+            });
+          },
+          error: error => {
+            this.loading = false;
+            Swal.fire(em.ERROR_TAG,em.SERVER_ERROR,'error').then((r) =>{
+              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+                window.location.reload();
+              }
+            });
+          }
+        });
+      }
+      this.loading = false;
+    });
+  }
+
+  //TODO: No funciona?????? '-' - En postman si.
+  resetAccount(user: User){
+    Swal.fire({
+      title: 'Reseteo de Credenciales',
+      html: `¿Está seguro de resetear las credenciales de la siguiente cuenta de usuario? <br> NOMBRE DE USUARIO: ${user.username} <br> E-MAIL: ${user.email}`,
+      icon: 'question',
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Resetear',
+      confirmButtonColor: '#54BE3D',
+      cancelButtonColor: '#D3211F',
+    }).then((r) => {
+      if(r.isConfirmed) {
+        this.authService.resetAccount(user.id!!).subscribe({
+          next: response => {
+            this.loading = false;
+            Swal.fire(sm.SUCCESS_TAG,sm.ACCOUNT_RESET,'success').then((r) =>{
+              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+                window.location.reload();
+              }
+            });
+          },
+          error: error => {
+            console.log(error);
+            this.loading = false;
+            Swal.fire(em.ERROR_TAG,em.SERVER_ERROR,'error').then((r) =>{
+              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+                window.location.reload();
+              }
+            });
+          }
+        })
+      }
+      this.loading = false
+    });
+  }
+
 }

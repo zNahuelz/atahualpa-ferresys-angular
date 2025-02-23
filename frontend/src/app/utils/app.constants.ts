@@ -47,6 +47,8 @@ export const SUCCESS_MESSAGES = {
   UPDATED_USER_DATA: 'Datos de la cuenta actualizados correctamente. Usted debe iniciar sesión con sus nuevas credenciales.',
   SALE_COMPLETED: 'Venta completada correctamente.',
   ACCOUNT_CREATED: 'Cuenta de Usuario creada correctamente. Se han enviado las credenciales de acceso al e-mail proporcionado.',
+  ACCOUNT_DELETED: 'Cuenta de Usuario eliminada correctamente.',
+  ACCOUNT_RESET: 'Credenciales de la Cuenta de Usuario reseteadas correctamente.',
 }
 
 export const PRODUCT_SEARCH_MODES = [

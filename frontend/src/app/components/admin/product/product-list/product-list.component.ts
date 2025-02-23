@@ -22,6 +22,7 @@ import {ProductDetailDialogComponent} from '../product-detail-dialog/product-det
 import Swal from 'sweetalert2';
 import {ERROR_MESSAGES as em, SUCCESS_MESSAGES as sm} from '../../../../utils/app.constants';
 import {RouterModule} from '@angular/router';
+import {AuthService} from '../../../../services/auth.service';
 
 
 @Component({
@@ -47,6 +48,7 @@ export class ProductListComponent {
   private productService = inject(ProductService);
   private supplierService = inject(SupplierService);
   private unitTypeService = inject(UnitTypeService);
+  protected authService = inject(AuthService);
   private dialog = inject(MatDialog);
   products: Product[] = [];
   unitTypes: UnitType[] = [];

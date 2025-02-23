@@ -115,7 +115,7 @@
             <div class="btn-group btn-group-sm" role="group">
               <button type="button" class="btn btn-success bg-gradient btn-sm" routerLink="/d/edit-product/{{p.id}}"><i class="bi bi-pencil-square"></i>
               </button>
-              <button type="button" class="btn btn-danger bg-gradient btn-sm" (click)="showDeleteDialog(p)"><i
+              <button type="button" class="btn btn-danger bg-gradient btn-sm" (click)="showDeleteDialog(p)" [disabled]="authService.getUserData().role === 'VENDEDOR'"><i
                 class="bi bi-trash-fill"></i></button>
               <button type="button" class="btn btn-info bg-gradient btn-sm" (click)="showProductDetail(p)"><i
                 class="bi bi-info-square"></i></button>

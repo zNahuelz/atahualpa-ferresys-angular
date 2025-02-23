@@ -50,10 +50,6 @@
         Productos
       </button>
       <mat-menu #productMenu="matMenu">
-        <button mat-menu-item routerLink="/d/new-product">
-          <mat-icon>add_circle</mat-icon>
-          Nuevo
-        </button>
         <button mat-menu-item routerLink="/d/product">
           <mat-icon>view_list</mat-icon>
           Listado
@@ -61,49 +57,15 @@
       </mat-menu>
     </div>
 
-    <div class="nav">
+    <div class="nav me-auto">
       <button mat-button [matMenuTriggerFor]="supplierMenu" class="text-dark">
         <mat-icon>domain_add</mat-icon>
         Proveedores
       </button>
       <mat-menu #supplierMenu="matMenu">
-        <button mat-menu-item routerLink="/d/new-supplier">
-          <mat-icon>add_circle</mat-icon>
-          Nuevo
-        </button>
         <button mat-menu-item routerLink="/d/supplier">
           <mat-icon>view_list</mat-icon>
           Listado
-        </button>
-      </mat-menu>
-    </div>
-
-    <div class="nav">
-      <button mat-button [matMenuTriggerFor]="accountsMenu" class="text-dark">
-        <mat-icon>manage_accounts</mat-icon>
-        Cuentas
-      </button>
-      <mat-menu #accountsMenu="matMenu">
-        <button mat-menu-item routerLink="/d/new-account">
-          <mat-icon>add_circle</mat-icon>
-          Nueva
-        </button>
-        <button mat-menu-item routerLink="/d/account">
-          <mat-icon>view_list</mat-icon>
-          Listado
-        </button>
-      </mat-menu>
-    </div>
-
-    <div class="nav me-auto">
-      <button mat-button [matMenuTriggerFor]="toolsMenu" class="text-dark">
-        <mat-icon>tune</mat-icon>
-        Varios
-      </button>
-      <mat-menu #toolsMenu="matMenu">
-        <button mat-menu-item routerLink="/d/unit-type-mgmt">
-          <mat-icon>handyman</mat-icon>
-          Presentaciones
         </button>
       </mat-menu>
     </div>

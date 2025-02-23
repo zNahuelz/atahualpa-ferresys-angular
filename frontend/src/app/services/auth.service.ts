@@ -69,11 +69,17 @@ export class AuthService {
     return false;
   }
 
+  redirectToUnauthorized() {
+    this.router.navigate(['/d/401']);
+    return false;
+  }
+
   getUserData() {
     const user = this.decodeToken(this.getToken()!);
     return {
       'username': user.username ?? 'USUARIO',
       'email': user.email ?? 'EMAIL@DOMINIO.COM',
+      'role': user.role ?? 'N/A',
     }
   }
 
@@ -132,6 +138,18 @@ export class AuthService {
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.API_URL}`, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
+  }
+
+  deleteAccount(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.API_URL}/${id}`, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
+  }
+
+  resetAccount(id: number): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/reset/${id}`,{
       headers: {authorization: `Bearer ${this.getToken()}`}
     });
   }

@@ -21,7 +21,7 @@ import {matchControlsValidator} from '../../../validators/custom-validators';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  private authService = inject(AuthService);
+  protected authService = inject(AuthService);
   router = inject(Router)
   userData = new User();
   loading = false;

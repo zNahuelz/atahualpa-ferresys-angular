@@ -29,6 +29,7 @@ import {integersOnlyValidator} from '../../../../validators/custom-validators';
 import {SupplierDetailDialogComponent} from '../supplier-detail-dialog/supplier-detail-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import {AuthService} from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-supplier-list',
@@ -62,6 +63,7 @@ import Swal from 'sweetalert2';
 export class SupplierListComponent {
   private supplierService = inject(SupplierService);
   private dialog = inject(MatDialog);
+  protected authService = inject(AuthService);
   loading = false;
   loadError = false;
   searchFailed = false;
