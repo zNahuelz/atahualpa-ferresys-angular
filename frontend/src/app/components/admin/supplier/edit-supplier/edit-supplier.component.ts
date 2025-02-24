@@ -77,11 +77,11 @@ export class EditSupplierComponent {
         });
       },
       error: error => {
-        console.log(error);
         if (error.errors.ruc) {
           Swal.fire(em.ERROR_TAG, em.RUC_TAKEN, 'error').then((r) => {
             this.editSupplierForm.get('ruc')!!.reset();
           });
+          this.submitting = false;
         } else {
           Swal.fire(em.ERROR_TAG, em.SUPPLIER_UPDATE_FAILED, 'error').then((r) => {
             if (r.isConfirmed || r.dismiss || r.isDismissed) {

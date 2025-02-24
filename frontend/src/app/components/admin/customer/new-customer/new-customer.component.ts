@@ -31,8 +31,11 @@ import {ERROR_MESSAGES as em, SUCCESS_MESSAGES as sm} from '../../../../utils/ap
 })
 export class NewCustomerComponent {
   private customerService = inject(CustomerService);
+  protected readonly allowIntegers = allowIntegers;
+  protected readonly integersOnly = integersOnly;
   location = inject(Location);
   submitting = false;
+
 
   newCustomerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/), Validators.minLength(3), Validators.maxLength(30)]),
@@ -44,6 +47,7 @@ export class NewCustomerComponent {
   });
 
   onSubmit() {
+    this.submitting = true;
     const customer = new Customer(
       this.newCustomerForm.value.name!!,
       this.newCustomerForm.value.surname!!,
@@ -60,14 +64,15 @@ export class NewCustomerComponent {
             window.location.reload();
           }
         });
+        this.submitting = false;
       },
       error: error => {
         if (error.errors.dni) {
           Swal.fire(em.ERROR_TAG, em.DNI_TAKEN, 'error');
           this.newCustomerForm.patchValue({dni: ''});
           this.newCustomerForm.updateValueAndValidity();
+          this.submitting = false;
         } else {
-          console.log(error);
           Swal.fire(em.ERROR_TAG, em.SERVER_ERROR, 'error').then((r) => {
             if (r.dismiss || r.isDismissed || r.isConfirmed) {
               window.location.reload();
@@ -78,6 +83,4 @@ export class NewCustomerComponent {
     });
   }
 
-  protected readonly allowIntegers = allowIntegers;
-  protected readonly integersOnly = integersOnly;
 }

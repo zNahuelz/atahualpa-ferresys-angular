@@ -13,6 +13,7 @@ import {
 import {MatSort} from '@angular/material/sort';
 import Swal from 'sweetalert2';
 import {SUCCESS_MESSAGES as sm, ERROR_MESSAGES as em} from '../../../../utils/app.constants';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-account-list',
@@ -28,7 +29,8 @@ import {SUCCESS_MESSAGES as sm, ERROR_MESSAGES as em} from '../../../../utils/ap
     MatRowDef,
     MatSort,
     MatTable,
-    MatHeaderCellDef
+    MatHeaderCellDef,
+    RouterLink
   ],
   templateUrl: './account-list.component.html',
   styleUrl: './account-list.component.css'
@@ -78,21 +80,21 @@ export class AccountListComponent {
       confirmButtonColor: '#54BE3D',
       cancelButtonColor: '#D3211F',
     }).then((r) => {
-      if(r.isConfirmed) {
+      if (r.isConfirmed) {
         this.loading = true;
         this.authService.deleteAccount(user.id!!).subscribe({
           next: response => {
             this.loading = false;
-            Swal.fire(sm.SUCCESS_TAG,sm.ACCOUNT_DELETED,'success').then((r) =>{
-              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+            Swal.fire(sm.SUCCESS_TAG, sm.ACCOUNT_DELETED, 'success').then((r) => {
+              if (r.isConfirmed || r.isDismissed || r.dismiss) {
                 window.location.reload();
               }
             });
           },
           error: error => {
             this.loading = false;
-            Swal.fire(em.ERROR_TAG,em.SERVER_ERROR,'error').then((r) =>{
-              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+            Swal.fire(em.ERROR_TAG, em.SERVER_ERROR, 'error').then((r) => {
+              if (r.isConfirmed || r.isDismissed || r.dismiss) {
                 window.location.reload();
               }
             });
@@ -103,8 +105,7 @@ export class AccountListComponent {
     });
   }
 
-  //TODO: No funciona?????? '-' - En postman si.
-  resetAccount(user: User){
+  resetAccount(user: User) {
     Swal.fire({
       title: 'Reseteo de Credenciales',
       html: `¿Está seguro de resetear las credenciales de la siguiente cuenta de usuario? <br> NOMBRE DE USUARIO: ${user.username} <br> E-MAIL: ${user.email}`,
@@ -115,12 +116,12 @@ export class AccountListComponent {
       confirmButtonColor: '#54BE3D',
       cancelButtonColor: '#D3211F',
     }).then((r) => {
-      if(r.isConfirmed) {
+      if (r.isConfirmed) {
         this.authService.resetAccount(user.id!!).subscribe({
           next: response => {
             this.loading = false;
-            Swal.fire(sm.SUCCESS_TAG,sm.ACCOUNT_RESET,'success').then((r) =>{
-              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+            Swal.fire(sm.SUCCESS_TAG, sm.ACCOUNT_RESET, 'success').then((r) => {
+              if (r.isConfirmed || r.isDismissed || r.dismiss) {
                 window.location.reload();
               }
             });
@@ -128,8 +129,8 @@ export class AccountListComponent {
           error: error => {
             console.log(error);
             this.loading = false;
-            Swal.fire(em.ERROR_TAG,em.SERVER_ERROR,'error').then((r) =>{
-              if(r.isConfirmed || r.isDismissed || r.dismiss) {
+            Swal.fire(em.ERROR_TAG, em.SERVER_ERROR, 'error').then((r) => {
+              if (r.isConfirmed || r.isDismissed || r.dismiss) {
                 window.location.reload();
               }
             });

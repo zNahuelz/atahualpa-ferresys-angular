@@ -8,7 +8,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {AuthService} from '../../../services/auth.service';
 import {Router} from '@angular/router';
-import {NotificationService} from '../../../services/notification.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -20,7 +19,6 @@ import Swal from 'sweetalert2';
 export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
-  private notificationService = inject(NotificationService);
 
   loginForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]),
@@ -28,26 +26,31 @@ export class LoginComponent {
     rememberMe: new FormControl(false),
   });
   maintenance = false;
+  submitting = false;
 
   clear() {
     this.loginForm.reset();
   }
 
   onSubmit() {
-    this.authService.login(this.loginForm.value.username!!, this.loginForm.value.password!!, this.loginForm.value.rememberMe!!).subscribe((response) => {
-        this.notificationService.showNotification('Bienvenido!!', 'alert');
+    this.submitting = true;
+    this.authService.login(this.loginForm.value.username!!, this.loginForm.value.password!!, this.loginForm.value.rememberMe!!).subscribe({
+      next: response => {
+        this.submitting = false;
         this.router.navigate(['/d']);
       },
-      (err) => {
-        Swal.fire('Oops! Credenciales Incorrectas','Usuario o contraseña incorrecta, intente nuevamente.','error').then((r) =>{
-          if(r.dismiss || r.isDismissed || r.isConfirmed){
+      error: error => {
+        this.submitting = false;
+        Swal.fire('Oops! Credenciales Incorrectas', 'Usuario o contraseña incorrecta, intente nuevamente.', 'error').then((r) => {
+          if (r.dismiss || r.isDismissed || r.isConfirmed) {
             window.location.reload();
           }
         });
-      });
+      }
+    });
   }
 
-  goToRecovery(){
+  goToRecovery() {
     this.router.navigate(['/recover-account']);
   }
 }

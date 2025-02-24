@@ -26,15 +26,20 @@ Atahualpa Ferresys es un sistema web simple para la gestión del área de almac�
 Wip....
 
 ## Imágenes
-#### Listado de Productos
-<img src="docs/public/product-list.png" alt="Listado de Productos">
-#### Listado de Comprobantes
-<img src="docs/public/voucher-list.png" alt="Listado de Comprobantes">
-#### Detalle de Comprobante
-<img src="docs/public/voucher-detail.png" alt="Detalle de Comprobante">
-#### Comprobante en PDF
-<img src="docs/public/voucher-pdf.png" alt="Comprobante en PDF">
-#### Módulo de Ventas
-<img src="docs/public/cart.png" alt="Módulo de Ventas">
-#### Perfil de Usuario
-<img src="docs/public/my-profile.png" alt="Perfil de Usuario">
+Listado de Productos
+<img src="docs/public/product-list.png" alt="Listado de Productos"/>
+Listado de Comprobantes
+
+<img src="docs/public/voucher-list.png" alt="Listado de Comprobantes"/>
+Detalle de Comprobante
+
+<img src="docs/public/voucher-detail.png" alt="Detalle de Comprobante"/>
+Comprobante en PDF
+
+<img src="docs/public/voucher-pdf.png" alt="Comprobante en PDF"/>
+Módulo de Ventas
+
+<img src="docs/public/cart.png" alt="Módulo de Ventas"/>
+Perfil de Usuario
+
+<img src="docs/public/my-profile.png" alt="Perfil de Usuario"/>

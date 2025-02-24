@@ -5,7 +5,6 @@ import {catchError, Observable, of, tap, throwError} from 'rxjs';
 import {jwtDecode} from 'jwt-decode';
 import {Router} from '@angular/router';
 import {NotificationService} from './notification.service';
-import {HttpWrapperService} from './http-wrapper.service';
 import {User} from '../models/user.model';
 
 @Injectable({
@@ -149,7 +148,8 @@ export class AuthService {
   }
 
   resetAccount(id: number): Observable<any> {
-    return this.http.post<any>(`${this.API_URL}/reset/${id}`,{
+    console.log(this.getToken());
+    return this.http.post<any>(`${this.API_URL}/reset/${id}`, null, {
       headers: {authorization: `Bearer ${this.getToken()}`}
     });
   }

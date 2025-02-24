@@ -131,20 +131,25 @@
             <div class="row text-center ms-3 me-3 mt-3">
               <div class="col">
                 <button mat-fab extended class="me-2 bg-danger bg-gradient text-white" (click)="this.location.back()"
-                        type="button">
+                        type="button" [disabled]="submitting">
                   <mat-icon>cancel</mat-icon>
                   Cancelar
                 </button>
                 <button mat-fab extended class="me-2 bg-primary bg-gradient text-white" type="button"
-                        (click)="resetForm()">
+                        (click)="resetForm()" [disabled]="submitting">
                   <mat-icon>restart_alt</mat-icon>
                   Limpiar
                 </button>
 
-                <button mat-fab extended class="bg-success bg-gradient text-white" [disabled]="newProductForm.invalid"
+                <button mat-fab extended class="bg-success bg-gradient text-white"
+                        [disabled]="newProductForm.invalid || submitting"
                         type="submit">
                   <mat-icon>save</mat-icon>
-                  Guardar
+                  @if (submitting) {
+                    Guardando...
+                  } @else {
+                    Guardar
+                  }
                 </button>
               </div>
             </div>

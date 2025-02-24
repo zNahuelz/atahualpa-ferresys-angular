@@ -1,9 +1,7 @@
 import {Routes} from '@angular/router';
 import {LoginComponent} from './components/shared/login/login.component';
 import {DashboardComponent} from './components/shared/dashboard/dashboard.component';
-import {adminGuard} from './guards/admin.guard';
 import {loginGuard} from './guards/login.guard';
-import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {ProductListComponent} from './components/admin/product/product-list/product-list.component';
 import {NewProductComponent} from './components/admin/product/new-product/new-product.component';
 import {EditProductComponent} from './components/admin/product/edit-product/edit-product.component';
@@ -26,6 +24,7 @@ import {NewAccountComponent} from './components/admin/account/new-account/new-ac
 import {ManagementLayoutComponent} from './layouts/management-layout/management-layout.component';
 import {generalGuard} from './guards/general.guard';
 import {UnauthorizedComponent} from './components/shared/unauthorized/unauthorized.component';
+import {EditAccountComponent} from './components/admin/account/edit-account/edit-account.component';
 
 export const routes: Routes = [
   {path: '', component: LoginComponent, title: "FERRETERIA ATAHUALPA - INICIO DE SESIÓN", canActivate: [loginGuard]},
@@ -53,6 +52,7 @@ export const routes: Routes = [
         {path: 'voucher/:id', component: VoucherDetailComponent, title: 'FERRETERIA ATAHUALPA - DETALLE DE COMPROBANTE'},
         {path: 'account', component: AccountListComponent, title: 'FERRETERIA ATAHUALPA - LISTADO DE CUENTAS DE USUARIO',data:{roles: ['ADMINISTRADOR']}},
         {path: 'new-account', component: NewAccountComponent, title: 'FERRETERIA ATAHUALPA - NUEVO USUARIO',data:{roles: ['ADMINISTRADOR']}},
+        {path: 'edit-account/:id', component: EditAccountComponent, title: 'FERRETERIA ATAHUALPA - GESTIÓN DE CUENTAS DE USUARIO',data:{roles: ['ADMINISTRADOR']}},
         {path: 'profile', component: ProfileComponent, title: 'FERRETERIA ATAHUALPA - MI CUENTA'},
         {path: '401', component: UnauthorizedComponent, title: 'FERRETERIA ATAHUALPA - ACCESO RESTRINGIDO'},
       ]

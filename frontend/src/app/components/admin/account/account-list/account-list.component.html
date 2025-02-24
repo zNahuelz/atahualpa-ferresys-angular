@@ -62,6 +62,8 @@
             <div class="btn-group btn-group-sm" role="group">
               <button type="button" class="btn btn-success bg-gradient btn-sm" (click)="resetAccount(u)"><i class="bi bi-arrow-repeat"></i>
               </button>
+              <button type="button" class="btn btn-info bg-gradient btn-sm" routerLink="/d/edit-account/{{u.id}}"><i class="bi bi-pencil-square"></i>
+              </button>
               <button type="button" class="btn btn-danger bg-gradient btn-sm" (click)="deleteAccount(u)"><i
                 class="bi bi-trash-fill"></i></button>
             </div>

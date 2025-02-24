@@ -31,6 +31,7 @@ export class NewSupplierComponent {
   private supplierService = inject(SupplierService);
   allowIntegers = allowIntegers;
   location = inject(Location);
+  submitting = false;
 
   newSupplierForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.maxLength(150)]),
@@ -42,6 +43,7 @@ export class NewSupplierComponent {
   });
 
   onSubmit() {
+    this.submitting = true;
     const supplier = new Supplier(
       this.newSupplierForm.value.name!!,
       this.newSupplierForm.value.ruc!!.toString(),
@@ -64,6 +66,7 @@ export class NewSupplierComponent {
           Swal.fire(em.ERROR_TAG, em.RUC_TAKEN, 'error').then((r) => {
             this.newSupplierForm.get('ruc')!!.setValue('');
           });
+          this.submitting = false;
         } else {
           Swal.fire(em.ERROR_TAG, em.SERVER_ERROR, 'error').then((r) => {
             if (r.isConfirmed || r.isDismissed || r.dismiss) {

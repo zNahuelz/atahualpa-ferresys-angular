@@ -37,6 +37,7 @@ export class EditCustomerComponent {
   router = inject(Router);
   location = inject(Location);
   loading = false;
+  submitting = false;
 
   customer = new Customer();
   customerId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -55,6 +56,7 @@ export class EditCustomerComponent {
   }
 
   onSubmit() {
+    this.submitting = true;
     const customer = new Customer(
       this.editCustomerForm.value.name!!,
       this.editCustomerForm.value.surname!!,
@@ -71,12 +73,13 @@ export class EditCustomerComponent {
             this.router.navigate(['/d/customer']);
           }
         });
+        this.submitting = false;
       },
       error: err => {
-        console.log(err);
         if (err.errors.dni) {
           Swal.fire(em.ERROR_TAG, em.DNI_TAKEN, 'error');
           this.editCustomerForm.patchValue({dni: this.customer.dni});
+          this.submitting = false;
         } else {
           Swal.fire(em.ERROR_TAG, em.CUSTOMER_UPDATE_FAILED, 'error').then((r) => {
             if (r.dismiss || r.isDismissed || r.isConfirmed) {
