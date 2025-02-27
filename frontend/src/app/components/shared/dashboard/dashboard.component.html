@@ -1,1 +1,17 @@
-<p>dashboard works!</p>
+<div class="container mt-5">
+  <div class="row text-center mb-3">
+    <div class="col">
+      <img ngSrc="assets/images/logo_transparent.png" width="180" height="180" priority>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col">
+      <span class="fs-2 text-primary">¡Bienvenido! {{ authService.getUserData().username }}</span>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col">
+      <span class="fs-4 text-black">Hoy es... {{ Date.now() | date }}</span>
+    </div>
+  </div>
+</div>

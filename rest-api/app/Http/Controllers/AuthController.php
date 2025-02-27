@@ -107,7 +107,36 @@ class AuthController extends Controller
             'phone' => trim($request->phone),
             'username' => trim($request->username),
         ]);
-        //TODO: Enviar e-mail de contraseña actualizada!!
+        return response()->json($user);
+    }
+
+    public function forceUpdateAccData(Request $request)
+    {
+        $request->validate([
+            'id' => ['required','exists:users,id'],
+            'username' => ['required','string','min:5','max:20',Rule::unique('users','username')->ignore($request->id)],
+            'name' => ['required','regex:/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/'],
+            'paternal_surname' => ['required','regex:/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/'],
+            'maternal_surname' => ['required','regex:/^[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ\s]{1,30}$/'],
+            'email' => ['required','email','max:50',Rule::unique('users','email')->ignore($request->id)],
+            'phone' => ['required','string','min:6','max:15','regex:/^\+?\d{6,15}$/'],
+            'role' => ['required','exists:roles,id']
+        ]);
+
+        $user = User::find($request->id);
+        if(!$user)
+        {
+            return response()->json(['message' => 'Error! Usuario no encontrado.'],404);
+        }
+        $user->update([
+            'username' => trim($request->username),
+            'name' => trim(strtoupper($request->name)),
+            'paternal_surname' => trim(strtoupper($request->paternal_surname)),
+            'maternal_surname' => trim(strtoupper($request->maternal_surname)),
+            'email' => trim(strtoupper($request->email)),
+            'phone' => trim($request->phone),
+            'role_id' => $request->role,
+        ]);
         return response()->json($user);
     }
 
@@ -205,6 +234,16 @@ class AuthController extends Controller
     {
         $users = User::with('role')->get();
         return response()->json($users,200);
+    }
+
+    public function getUser($id)
+    {
+        $user = User::where('id',$id)->with('role')->first();
+        if(!$user)
+        {
+            return response()->json(['message' => 'Error! Usuario de ID: '.$id.' no encontrado.'],404);
+        }
+        return response()->json($user);
     }
 
     public function deleteUser($id)

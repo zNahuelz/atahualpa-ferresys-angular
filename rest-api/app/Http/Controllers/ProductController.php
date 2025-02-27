@@ -13,7 +13,6 @@ class ProductController extends Controller
 {
     public function createProduct(Request $request)
     {
-        //TODO: Description is always default.
         $request->validate([
             'name' => ['required','string','min:2','max:150'],
             'description' => ['max:255'],

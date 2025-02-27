@@ -49,6 +49,7 @@ export const SUCCESS_MESSAGES = {
   ACCOUNT_CREATED: 'Cuenta de Usuario creada correctamente. Se han enviado las credenciales de acceso al e-mail proporcionado.',
   ACCOUNT_DELETED: 'Cuenta de Usuario eliminada correctamente.',
   ACCOUNT_RESET: 'Credenciales de la Cuenta de Usuario reseteadas correctamente.',
+  ACCOUNT_UPDATED: 'Datos de la cuenta actualizados correctamente.',
 }
 
 export const PRODUCT_SEARCH_MODES = [

@@ -17,10 +17,12 @@ Route::group([
     'middleware' => GeneralMiddleware::class,
 ], function($router){
     Route::get('/', [AuthController::class, 'getUsers'])->middleware('role:ADMINISTRADOR');
+    Route::get('/{id}', [AuthController::class, 'getUser'])->middleware('role:ADMINISTRADOR');
+    Route::put('/u/{id}', [AuthController::class, 'forceUpdateAccData'])->middleware('role:ADMINISTRADOR');
     Route::delete('/{id}', [AuthController::class, 'deleteUser'])->middleware('role:ADMINISTRADOR');
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'createAccount'])->middleware('role:ADMINISTRADOR');
-    Route::get('/profile', [AuthController::class, 'profile'])->middleware('role:ADMINISTRADOR,VENDEDOR');
+    Route::get('/p/profile', [AuthController::class, 'profile'])->middleware('role:ADMINISTRADOR,VENDEDOR');
     Route::post('/recover_account', [AuthController::class, 'sendRecoveryMail']);
     Route::post('/verify_token', [AuthController::class, 'verifyRecoveryToken']);
     Route::post('/change_password', [AuthController::class, 'changePasswordWithToken']);

@@ -16,7 +16,6 @@ class VoucherController extends Controller
 {
     public function createVoucher(Request $request)
     {
-        //TODO: Review.
         $request->validate([
             'voucherType' => ['required','integer','exists:voucher_types,id'],
             'customerId' => ['required','integer','min:1','exists:customers,id'],

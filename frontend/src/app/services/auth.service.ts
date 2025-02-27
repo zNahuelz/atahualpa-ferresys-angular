@@ -123,8 +123,14 @@ export class AuthService {
     });
   }
 
+  forceUpdateAccountData(formData: {}, id: number): Observable<any> {
+    return this.http.put<any>(`${this.API_URL}/u/${id}`, formData, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
+  }
+
   retrieveUserData(): Observable<User> {
-    return this.http.get<User>(`${this.API_URL}/profile`, {
+    return this.http.get<User>(`${this.API_URL}/p/profile`, {
       headers: {authorization: `Bearer ${this.getToken()}`}
     });
   }
@@ -137,6 +143,12 @@ export class AuthService {
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.API_URL}`, {
+      headers: {authorization: `Bearer ${this.getToken()}`}
+    });
+  }
+
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(`${this.API_URL}/${id}`, {
       headers: {authorization: `Bearer ${this.getToken()}`}
     });
   }
